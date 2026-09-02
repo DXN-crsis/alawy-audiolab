@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Shot from "./Shot";
 import { m, AnimatePresence } from "motion/react";
-import { useStore } from "@/lib/store";
+import { useStore, cartKey } from "@/lib/store";
 import { money, SHOP } from "@/data/products";
 import { T, t, CAT_TYPE } from "@/data/copy";
 import s from "./Sheet.module.css";
@@ -11,20 +12,26 @@ import s from "./Sheet.module.css";
 const EASE = [0.22, 1, 0.36, 1];
 
 export default function ProductSheet() {
-  const { lang, peek, setPeek, add } = useStore();
+  const { lang, peek, setPeek } = useStore();
 
   return (
     <AnimatePresence>
-      {peek && <Sheet key={peek.slug} p={peek} lang={lang} close={() => setPeek(null)} add={add} />}
+      {peek && <Sheet key={peek.slug} p={peek} lang={lang} close={() => setPeek(null)} />}
     </AnimatePresence>
   );
 }
 
-function Sheet({ p, lang, close, add }) {
+function Sheet({ p, lang, close }) {
+  const { add, drop, lines } = useStore();
   const [vi, setVi] = useState(0);
   const [zoom, setZoom] = useState(false);
   const variant = p.variants?.[vi];
   const price = variant?.price ?? p.price;
+
+  // Offering "add to cart" for something already in the cart reads as a
+  // mistake, most obviously when the sheet was opened from the cart itself.
+  const key = cartKey(p.slug, vi);
+  const inCart = lines.some((l) => l.key === key);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -89,7 +96,7 @@ function Sheet({ p, lang, close, add }) {
           onClick={() => setZoom(true)}
           aria-label={t(T.sheet.zoom, lang)}
         >
-          <Image
+          <Shot
             src={`/products/${p.slug}.jpg`}
             alt={`${p.brand} ${p.name}`}
             width={1080}
@@ -137,14 +144,18 @@ function Sheet({ p, lang, close, add }) {
             </span>
             <div className={s.buttons}>
               <button
-                className="btn btn-primary"
+                className={inCart ? "btn btn-ghost" : "btn btn-primary"}
                 type="button"
                 onClick={() => {
+                  if (inCart) {
+                    drop(key); // stay open, so you can see it go and put it back
+                    return;
+                  }
                   add(p.slug, vi, `${p.brand} ${p.name}`);
                   close();
                 }}
               >
-                {t(T.shop.add, lang)}
+                {t(inCart ? T.sheet.remove : T.shop.add, lang)}
               </button>
               <a className="btn btn-ghost" href={ask} target="_blank" rel="noopener">
                 {t(T.hero.ask, lang)}

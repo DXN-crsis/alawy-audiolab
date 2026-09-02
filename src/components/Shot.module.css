@@ -1,0 +1,51 @@
+/* Sits over whichever container it is dropped into, in the page's own greys
+   rather than the white the banners happen to be — a white rectangle on a
+   black page is the one thing worse than an empty one. */
+.load {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--card);
+  color: var(--fg-30);
+}
+
+/* one pass of light across the panel, the same idea as the hero sheen */
+.load::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 34%,
+    rgba(255, 255, 255, 0.07) 50%,
+    transparent 66%
+  );
+  animation: sweep 1.4s linear infinite;
+}
+@keyframes sweep {
+  from { transform: translate3d(-100%, 0, 0); }
+  to   { transform: translate3d(100%, 0, 0); }
+}
+
+.load svg {
+  position: relative;
+  z-index: 1;
+  animation: breathe 1.8s var(--ease) infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 1; }
+}
+
+/* A weak device is exactly where this shows longest, so it must not also be
+   the thing costing frames. The panel and the icon stay; the motion goes. */
+html[data-lite] .load::after,
+html[data-lite] .load svg { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .load::after { animation: none; }
+  .load svg { animation: none; opacity: 0.7; }
+}

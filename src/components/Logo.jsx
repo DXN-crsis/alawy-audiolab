@@ -26,7 +26,16 @@ export default function Logo({ size = 22, sub = false }) {
     <span style={{ display: "inline-flex", alignItems: "center", gap: size * 0.4 }}>
       <Mark size={size * (sub ? 1.5 : 1.2)} />
       <span style={{ display: "grid", gap: 2, lineHeight: 1 }}>
-        <b style={{ fontWeight: 800, fontSize: size * 0.82, letterSpacing: "0.03em" }}>ALAWY</b>
+        <b
+          style={{
+            fontFamily: "var(--mark)",
+            fontWeight: 400,
+            fontSize: size * 0.66,
+            letterSpacing: "0.01em",
+          }}
+        >
+          ALAWY
+        </b>
         {sub && (
           <em
             style={{

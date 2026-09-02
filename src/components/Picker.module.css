@@ -179,6 +179,7 @@ html[dir="rtl"] .option:hover > svg { translate: -3px 0; }
 .result[data-first="true"] .rank { background: var(--pop); color: #04122e; border-color: transparent; }
 
 .shot {
+  position: relative;
   display: block;
   width: 100%;
   padding: 0;
@@ -232,7 +233,7 @@ html[dir="rtl"] .name { letter-spacing: 0; }
   background: var(--surface);
 }
 .extra > div { flex: 1; min-width: 0; display: grid; gap: 3px; }
-.extraThumb { width: 44px; height: 55px; border-radius: var(--r-sm); overflow: hidden; background: #fff; flex: none; }
+.extraThumb { width: 44px; height: 55px; border-radius: var(--r-sm); overflow: hidden; background: var(--card); flex: none; }
 .extraThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .extraLabel { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-30); }
 html[dir="rtl"] .extraLabel { letter-spacing: 0; text-transform: none; }

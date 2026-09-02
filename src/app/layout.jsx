@@ -1,10 +1,18 @@
-import { Geist, Geist_Mono, Noto_Kufi_Arabic } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Kufi_Arabic, Rubik_Mono_One } from "next/font/google";
 import { StoreProvider } from "@/lib/store";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
 const kufi = Noto_Kufi_Arabic({ subsets: ["arabic"], variable: "--font-kufi", display: "swap" });
+// The wordmark only. Closest available match to the squared, near-solid
+// letterforms of his logo; five glyphs, so the cost is a rounding error.
+const mark = Rubik_Mono_One({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-mark",
+  display: "swap",
+});
 
 export const metadata = {
   title: "ALAWY audiolab",
@@ -58,7 +66,7 @@ export default function RootLayout({ children }) {
       lang="ar"
       dir="rtl"
       suppressHydrationWarning
-      className={`${geist.variable} ${mono.variable} ${kufi.variable}`}
+      className={`${geist.variable} ${mono.variable} ${kufi.variable} ${mark.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: BOOT }} />

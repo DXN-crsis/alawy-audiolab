@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import Shot from "./Shot";
 import { useStore } from "@/lib/store";
 import { money } from "@/data/products";
 import { T, t } from "@/data/copy";
@@ -25,7 +25,7 @@ export default function ProductCard({ product, index }) {
       />
 
       <div className={s.shot}>
-        <Image
+        <Shot
           src={`/products/${product.slug}.jpg`}
           alt={`${product.brand} ${product.name}`}
           width={864}

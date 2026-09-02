@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import Shot from "./Shot";
 import { useStore } from "@/lib/store";
 import { recommend, addon } from "@/lib/recommend";
 import { money, SHOP } from "@/data/products";
@@ -192,7 +193,7 @@ function Results({ ranked, extra, lang, reset }) {
               onClick={() => setPeek(r.product)}
               aria-label={`${r.product.brand} ${r.product.name}`}
             >
-              <Image
+              <Shot
                 src={`/products/${r.product.slug}.jpg`}
                 alt={`${r.product.brand} ${r.product.name}`}
                 priority

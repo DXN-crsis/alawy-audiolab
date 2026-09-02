@@ -4,6 +4,8 @@ import { createContext, useContext, useEffect, useMemo, useState, useCallback } 
 import { LazyMotion, domAnimation } from "motion/react";
 import { bySlug, money, SHOP } from "@/data/products";
 
+export const cartKey = (slug, vi = 0) => (vi ? `${slug}#${vi}` : slug);
+
 const Ctx = createContext(null);
 const KEY = "alawy-cart";
 
@@ -56,7 +58,7 @@ export function StoreProvider({ children }) {
 
   // a cart key is slug, or slug#variantIndex when the product has variants
   const add = useCallback((slug, vi = 0, label = "") => {
-    const key = vi ? `${slug}#${vi}` : slug;
+    const key = cartKey(slug, vi);
     setCart((c) => ({ ...c, [key]: (c[key] || 0) + 1 }));
     setToast({ slug, label });
   }, []);
@@ -67,6 +69,14 @@ export function StoreProvider({ children }) {
       const next = { ...c };
       if (n < 1) delete next[key];
       else next[key] = n;
+      return next;
+    });
+  }, []);
+
+  const drop = useCallback((key) => {
+    setCart((c) => {
+      const next = { ...c };
+      delete next[key];
       return next;
     });
   }, []);
@@ -114,6 +124,7 @@ export function StoreProvider({ children }) {
     total,
     add,
     bump,
+    drop,
     open,
     setOpen,
     peek,
