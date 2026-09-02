@@ -10,9 +10,9 @@
   text-align: center;
 }
 
-/* Two transform-only layers. No filter: a blurred full-bleed layer is the most
-   expensive thing a phone GPU can be asked to repaint every frame, and soft
-   enough gradient stops give the same result for free. */
+/* Five layers, every one animated with transforms alone. No filter: a blurred
+   full-bleed element is the most expensive thing a phone GPU can be asked to
+   repaint, and gradients this soft do not need one. */
 .mesh {
   position: absolute;
   inset: -20%;
@@ -32,10 +32,135 @@
   100% { transform: translate3d(3%, 1.5%, 0) scale(1.12); }
 }
 
+/* Three soft discs on separate orbits. Because the periods do not divide into
+   one another the arrangement keeps changing for minutes at a time. */
+.orbs {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.orbs i {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  will-change: transform;
+}
+.o1 {
+  width: 58vw;
+  height: 58vw;
+  top: -22%;
+  inset-inline-start: -14%;
+  background: radial-gradient(circle, rgba(88, 126, 214, 0.5), rgba(88, 126, 214, 0) 66%);
+  animation: orb1 31s var(--ease) infinite alternate;
+}
+.o2 {
+  width: 46vw;
+  height: 46vw;
+  top: 6%;
+  inset-inline-end: -12%;
+  background: radial-gradient(circle, rgba(150, 141, 219, 0.42), rgba(150, 141, 219, 0) 66%);
+  animation: orb2 43s var(--ease) infinite alternate;
+}
+.o3 {
+  width: 66vw;
+  height: 66vw;
+  bottom: -34%;
+  inset-inline-start: 16%;
+  background: radial-gradient(circle, rgba(96, 168, 224, 0.4), rgba(96, 168, 224, 0) 68%);
+  animation: orb3 37s var(--ease) infinite alternate;
+}
+.o4 {
+  width: 38vw;
+  height: 38vw;
+  top: 34%;
+  inset-inline-start: 28%;
+  background: radial-gradient(circle, rgba(120, 200, 232, 0.34), rgba(120, 200, 232, 0) 66%);
+  animation: orb4 53s var(--ease) infinite alternate;
+}
+@keyframes orb4 {
+  0%   { transform: translate3d(-10%, 6%, 0) scale(0.9); }
+  100% { transform: translate3d(14%, -10%, 0) scale(1.2); }
+}
+
+/* Two wide bands crossing the field on different periods. Skewed so they read
+   as light through cloud rather than as stripes. */
+.aurora {
+  position: absolute;
+  inset: -30%;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  opacity: 0.4;
+  will-change: transform;
+  background:
+    linear-gradient(74deg, transparent 34%, rgba(255, 255, 255, 0.34) 45%, transparent 56%),
+    linear-gradient(102deg, transparent 58%, rgba(163, 205, 255, 0.5) 68%, transparent 78%);
+  animation: aurora 24s var(--ease) infinite alternate;
+}
+@keyframes aurora {
+  0%   { transform: translate3d(-8%, -4%, 0) skewY(-2deg); }
+  100% { transform: translate3d(9%, 5%, 0) skewY(2.5deg); }
+}
+
+/* A breath of light directly behind the wordmark, so the centre of the hero is
+   never the flattest part of it. */
+.glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(42% 44% at 50% 32%, rgba(255, 255, 255, 0.3), transparent 70%);
+  animation: breathe 9s var(--ease) infinite;
+  will-change: opacity, transform;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.22; transform: scale(1); }
+  50%      { opacity: 0.44; transform: scale(1.07); }
+}
+
+@keyframes orb1 {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(16%, 12%, 0) scale(1.16); }
+}
+@keyframes orb2 {
+  0%   { transform: translate3d(0, 0, 0) scale(1.08); }
+  100% { transform: translate3d(-14%, 18%, 0) scale(0.94); }
+}
+@keyframes orb3 {
+  0%   { transform: translate3d(0, 0, 0) scale(1.02); }
+  100% { transform: translate3d(-12%, -14%, 0) scale(1.14); }
+}
+
+/* A very slow turn of light. Nearly invisible on its own; what it does is stop
+   the field looking flat when the discs happen to line up. */
+.rays {
+  position: absolute;
+  inset: -45%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+  will-change: transform;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 10%,
+    rgba(255, 255, 255, 0.5) 15%,
+    transparent 21% 47%,
+    rgba(255, 255, 255, 0.35) 53%,
+    transparent 60% 100%
+  );
+  animation: turn 110s linear infinite;
+}
+@keyframes turn {
+  to { transform: rotate(360deg); }
+}
+
 .sheen {
   position: absolute;
   inset: -20%;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   opacity: 0.48;
   mix-blend-mode: soft-light;
@@ -50,6 +175,48 @@
   100% { transform: translate3d(5%, 1%, 0) scale(1.1); }
 }
 
+/* Static grain, tiled small. Costs one raster and nothing per frame, and it is
+   what keeps large flat gradients from banding on cheap panels. */
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.24;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
+/* Asked for explicitly: keep it moving even when the system asks for calm, but
+   slow enough that it reads as atmosphere rather than movement. */
+@media (prefers-reduced-motion: reduce) {
+  .mesh  { animation-duration: 150s !important; }
+  .o1    { animation-duration: 130s !important; }
+  .o2    { animation-duration: 170s !important; }
+  .o3    { animation-duration: 150s !important; }
+  .o4     { animation-duration: 190s !important; }
+  .sheen  { animation-duration: 160s !important; }
+  .rays   { animation-duration: 400s !important; }
+  .aurora { animation-duration: 140s !important; }
+  .glow   { animation-duration: 40s !important; }
+  .word {
+    animation-duration: 26s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+/* A weak device gets the colour and none of the work. */
+html[data-lite] .mesh,
+html[data-lite] .orbs i,
+html[data-lite] .sheen,
+html[data-lite] .rays,
+html[data-lite] .aurora,
+html[data-lite] .glow { animation: none !important; will-change: auto !important; }
+html[data-lite] .rays,
+html[data-lite] .aurora,
+html[data-lite] .grain { display: none; }
+
 .fade {
   position: absolute;
   inset: auto 0 0 0;
@@ -59,7 +226,28 @@
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #000);
 }
 
-.inner { position: relative; z-index: 3; }
+.inner { position: relative; z-index: 4; }
+
+/* Scroll-driven, so the browser runs it on the compositor and the main thread
+   never sees a scroll handler. Chrome and Edge today; anywhere else it simply
+   does not apply and the hero behaves as before. */
+@supports (animation-timeline: scroll()) {
+  .inner {
+    animation: lift linear both;
+    /* scroll(root), not scroll(): the nearest scrollport to .inner is .hero,
+       which is overflow:hidden and therefore never scrolls, so a bare scroll()
+       resolves to an inactive timeline and the animation simply never runs. */
+    animation-timeline: scroll(root);
+    animation-range: 0 88vh;
+    /* progress comes from the scrollbar, so the duration must stay auto — the
+       blanket reduce-motion rule forces 0.25s otherwise and it finishes at
+       once instead of following the scroll */
+    animation-duration: auto !important;
+  }
+  @keyframes lift {
+    to { transform: translate3d(0, -70px, 0); opacity: 0.15; }
+  }
+}
 
 /* Entrance: one keyframe, staggered by delay. Everything is opacity+transform,
    so it composites and never touches layout. */
@@ -77,7 +265,11 @@
   justify-content: center;
   color: #000;
   margin-bottom: clamp(14px, 1.8vw, 22px);
-  animation: pop 0.5s var(--ease) backwards;
+  animation: pop 0.5s var(--ease) backwards, float 7s var(--ease) 0.5s infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(0, -9px, 0) rotate(-1.2deg); }
 }
 .mark svg { width: clamp(52px, 7vw, 78px); height: auto; }
 
@@ -96,6 +288,26 @@
   display: block;
   animation: rise 0.5s var(--ease) backwards;
   animation-delay: calc(60ms + var(--i) * 35ms);
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .word {
+    background: linear-gradient(
+      104deg,
+      #000 0%, #000 38%,
+      #33477a 47%, #5b76bd 50%, #33477a 53%,
+      #000 62%, #000 100%
+    );
+    background-size: 320% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 7s linear 1.1s infinite;
+  }
+  @keyframes shine {
+    0%       { background-position: 130% 0; }
+    45%, 100% { background-position: -30% 0; }
+  }
 }
 
 .sig {

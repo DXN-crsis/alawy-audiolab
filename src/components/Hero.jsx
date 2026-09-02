@@ -14,8 +14,23 @@ export default function Hero() {
 
   return (
     <header className={s.hero} id="top">
-      <div className={`${s.mesh} amb`} />
-      <div className={`${s.sheen} amb`} />
+      {/* Layered rather than one gradient: each drifts on its own clock, so the
+          field never settles into a repeating pose. Transforms only, so it all
+          stays on the compositor. The motion gating lives in the stylesheet
+          instead of the shared "amb" class, because this is wanted moving even
+          with the system reduce-motion setting on — it runs, just far slower. */}
+      <div className={s.mesh} />
+      <div className={s.orbs} aria-hidden="true">
+        <i className={s.o1} />
+        <i className={s.o2} />
+        <i className={s.o3} />
+        <i className={s.o4} />
+      </div>
+      <div className={s.aurora} />
+      <div className={s.glow} />
+      <div className={s.rays} />
+      <div className={s.sheen} />
+      <div className={s.grain} />
       <div className={s.fade} />
 
       <div className={`container ${s.inner}`}>

@@ -173,7 +173,23 @@ section[id] { scroll-margin-top: calc(var(--nav) + 20px); }
 
 /* Lift only where a real pointer can hover — on a phone it just fires on tap. */
 @media (hover: hover) and (pointer: fine) {
+  .btn { position: relative; overflow: hidden; }
   .btn:hover { transform: translateY(-2px); }
+  /* one pass of light across the button, only while the cursor is on it */
+  .btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.4) 50%, transparent 62%);
+    transform: translate3d(-120%, 0, 0);
+  }
+  .btn:hover::after { animation: btnSheen 0.75s var(--ease); }
+  @keyframes btnSheen {
+    to { transform: translate3d(120%, 0, 0); }
+  }
+  .btn-dark::after,
+  .btn-light::after { background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.22) 50%, transparent 62%); }
 }
 @media (hover: none) {
   .btn:active { transform: scale(0.97); }
@@ -198,6 +214,24 @@ html[data-js] [data-stagger][data-shown] > * {
 [data-stagger][data-shown] > *:nth-child(4) { transition-delay: 240ms; }
 [data-stagger][data-shown] > *:nth-child(5) { transition-delay: 320ms; }
 [data-stagger][data-shown] > *:nth-child(6) { transition-delay: 400ms; }
+
+/* Scroll-driven entrances where the browser supports them: same look as the
+   observer-driven reveal, but tied to position rather than to a one-shot
+   trigger, so it tracks the scrollbar both ways. Purely additive — without
+   support the IntersectionObserver path above still runs. */
+@supports (animation-timeline: view()) {
+  html[data-js] [data-reveal]:not([data-shown]),
+  html[data-js] [data-stagger]:not([data-shown]) > * {
+    animation: enter linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 62%;
+    animation-duration: auto !important;
+  }
+  @keyframes enter {
+    from { opacity: 0; transform: translate3d(0, 34px, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+}
 
 /* ── motion budget ─────────────────────────────────────────
    [data-lite] is set before first paint for low-memory / few-core / Save-Data
