@@ -1,0 +1,137 @@
+.hero {
+  position: relative;
+  min-height: clamp(540px, 86svh, 820px);
+  padding: calc(var(--nav) + var(--s8)) 0 var(--s6);
+  padding-top: calc(var(--nav) + env(safe-area-inset-top) + var(--s8));
+  background: var(--sky);
+  color: #000;
+  overflow: hidden;
+  isolation: isolate;
+  text-align: center;
+}
+
+/* Two transform-only layers. No filter: a blurred full-bleed layer is the most
+   expensive thing a phone GPU can be asked to repaint every frame, and soft
+   enough gradient stops give the same result for free. */
+.mesh {
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+  background:
+    radial-gradient(40% 46% at 20% 24%, #7d9de4 0%, rgba(125, 157, 228, 0) 70%),
+    radial-gradient(30% 34% at 82% 22%, #9d94dd 0%, rgba(157, 148, 221, 0) 68%),
+    radial-gradient(50% 46% at 50% 80%, #5f83d2 0%, rgba(95, 131, 210, 0) 74%),
+    radial-gradient(34% 38% at 90% 70%, #8fb0e2 0%, rgba(143, 176, 226, 0) 70%),
+    radial-gradient(34% 34% at 10% 74%, #79b6e4 0%, rgba(121, 182, 228, 0) 70%);
+  animation: drift 38s var(--ease) infinite alternate;
+}
+@keyframes drift {
+  0%   { transform: translate3d(-2%, 0, 0) scale(1.04); }
+  100% { transform: translate3d(3%, 1.5%, 0) scale(1.12); }
+}
+
+.sheen {
+  position: absolute;
+  inset: -20%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.48;
+  mix-blend-mode: soft-light;
+  will-change: transform;
+  background:
+    radial-gradient(at 50% 2%, rgba(255, 255, 255, 0.34), transparent 44%),
+    linear-gradient(116deg, transparent 18%, rgba(255, 255, 255, 0.22) 37%, transparent 51%);
+  animation: sheen 30s var(--ease) infinite alternate;
+}
+@keyframes sheen {
+  0%   { transform: translate3d(-4%, 0, 0) scale(1.04); }
+  100% { transform: translate3d(5%, 1%, 0) scale(1.1); }
+}
+
+.fade {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 220px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #000);
+}
+
+.inner { position: relative; z-index: 3; }
+
+/* Entrance: one keyframe, staggered by delay. Everything is opacity+transform,
+   so it composites and never touches layout. */
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(0, 22px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: none; }
+}
+
+.mark {
+  display: flex;
+  justify-content: center;
+  color: #000;
+  margin-bottom: clamp(14px, 1.8vw, 22px);
+  animation: pop 0.5s var(--ease) backwards;
+}
+.mark svg { width: clamp(52px, 7vw, 78px); height: auto; }
+
+.word {
+  font-size: clamp(46px, 11.5vw, 142px);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: 0.06em;
+  text-indent: 0.06em;
+  display: flex;
+  justify-content: center;
+  direction: ltr;
+}
+.word span {
+  display: block;
+  animation: rise 0.5s var(--ease) backwards;
+  animation-delay: calc(60ms + var(--i) * 35ms);
+}
+
+.sig {
+  font-size: clamp(13px, 1.5vw, 19px);
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  color: rgba(0, 0, 0, 0.42);
+  direction: ltr;
+  margin-top: clamp(6px, 0.8vw, 12px);
+  animation: rise 0.5s var(--ease) backwards 0.22s;
+}
+
+.sub {
+  font-family: var(--ar);
+  font-size: clamp(17px, 2vw, 23px);
+  color: rgba(0, 0, 0, 0.8);
+  direction: rtl;
+  margin-top: var(--s5);
+  animation: rise 0.5s var(--ease) backwards 0.28s;
+}
+.subEn {
+  font-size: clamp(14.5px, 1.4vw, 17px);
+  color: rgba(0, 0, 0, 0.5);
+  margin: var(--s2) auto var(--s5);
+  max-width: 34em;
+  animation: rise 0.5s var(--ease) backwards 0.34s;
+}
+
+.actions {
+  display: flex;
+  gap: 11px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: rise 0.5s var(--ease) backwards 0.4s;
+}
+
+@media (max-width: 560px) {
+  .actions :global(.btn) { width: 100%; }
+}

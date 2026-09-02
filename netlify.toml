@@ -1,0 +1,9 @@
+# Netlify detects Next.js and installs its runtime itself, so the plugin is
+# deliberately not declared here — declaring it pins a version that then has to
+# be bumped by hand.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"

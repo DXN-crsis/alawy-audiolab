@@ -1,0 +1,184 @@
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  inset-inline-end: 0;
+  z-index: 140;
+  width: min(420px, 100%);
+  height: 100dvh;
+  background: var(--bg-2);
+  border-inline-start: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--s4) var(--s5);
+  padding-top: max(var(--s4), env(safe-area-inset-top));
+  border-bottom: 1px solid var(--border);
+}
+.head h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+.close {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--fg-70);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background var(--dur-sm) var(--ease), color var(--dur-sm) var(--ease);
+}
+.close:hover { background: var(--surface-2); color: var(--fg); }
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--s4) var(--s5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+.line { display: flex; gap: 13px; align-items: center; }
+.thumb { width: 50px; height: 62px; border-radius: var(--r-md); flex: none; overflow: hidden; background: #fff; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.info { flex: 1; min-width: 0; }
+.info b { display: block; font-size: 14.5px; font-weight: 500; letter-spacing: -0.01em; }
+.info span { font-family: var(--mono); font-size: 12px; color: var(--fg-50); font-variant-numeric: tabular-nums; }
+.info em { display: block; font-style: normal; font-size: 11.5px; color: var(--fg-30); }
+
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px;
+}
+.qty button {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 0;
+  background: none;
+  color: var(--fg-70);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  transition: background var(--dur-sm) var(--ease), color var(--dur-sm) var(--ease);
+}
+.qty button:hover { background: var(--surface-2); color: var(--fg); }
+.qty i { font-style: normal; min-width: 20px; text-align: center; font-family: var(--mono); font-size: 13px; }
+
+.empty {
+  margin: auto;
+  text-align: center;
+  color: var(--fg-30);
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+.empty svg { width: 34px; height: 34px; opacity: 0.4; }
+
+.foot {
+  padding: var(--s5);
+  padding-bottom: max(var(--s5), env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+.total { display: flex; justify-content: space-between; align-items: baseline; }
+.total span { font-size: 14px; color: var(--fg-50); }
+.total b { font-size: 25px; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.total small { font-size: 13px; font-weight: 400; color: var(--fg-30); }
+.note { font-size: 12px; color: var(--fg-30); text-align: center; line-height: 1.5; }
+
+/* ── checkout bar ─────────────────────────────────────────
+   Present the whole time there is something in the cart. One 46px line,
+   bottom-centred, width follows its content so it never spans the screen. */
+.bar {
+  position: fixed;
+  z-index: 120;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  left: 50%;
+  translate: -50% 0;
+  width: max-content;
+  max-width: calc(100vw - 28px);
+}
+.barBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 6px 6px 6px 10px;
+  padding-inline: 10px 6px;
+  border: 1px solid var(--border-2);
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--fg);
+  background: rgba(17, 17, 17, 0.9);
+  -webkit-backdrop-filter: saturate(1.6) blur(18px);
+  backdrop-filter: saturate(1.6) blur(18px);
+  box-shadow: 0 18px 44px -20px rgba(0, 0, 0, 0.95);
+  transition: background var(--dur-sm) var(--ease), border-color var(--dur-sm) var(--ease);
+}
+.barBtn:hover { background: rgba(26, 26, 26, 0.95); border-color: rgba(255, 255, 255, 0.22); }
+html[data-lite] .barBtn { background: #111; }
+
+.barThumb { width: 30px; height: 37px; border-radius: 8px; overflow: hidden; background: #fff; flex: none; }
+.barThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* the label swaps in place, so the row must not resize under it */
+.barText { display: grid; text-align: start; line-height: 1.3; min-width: 0; }
+.barText i {
+  grid-area: 1 / 1;
+  font-style: normal;
+  font-size: 11px;
+  color: var(--fg-50);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 26ch;
+}
+.barText b { grid-area: 2 / 1; font-size: 13.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.barGo {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--fg);
+  color: #000;
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background var(--dur-sm) var(--ease);
+}
+.barBtn:hover .barGo { background: #fff; }
+.barGo svg { transition: translate var(--dur-sm) var(--ease); }
+.barBtn:hover .barGo svg { translate: 3px 0; }
+html[dir="rtl"] .barGo svg { transform: scaleX(-1); }
+html[dir="rtl"] .barBtn:hover .barGo svg { translate: -3px 0; }
+
+@media (max-width: 420px) {
+  .barText i { max-width: 14ch; }
+  .barGo { padding: 0 11px; }
+}

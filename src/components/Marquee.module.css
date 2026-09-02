@@ -1,0 +1,66 @@
+.wrap {
+  position: relative;
+  /* Anchor left in BOTH languages. In an RTL block the oversized track is
+     right-anchored and overflows leftward, so the chain marches away from the
+     right edge with nothing behind it and that side empties out. */
+  direction: ltr;
+  z-index: 3;
+  padding: var(--s6) 0 var(--s7);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+html[dir="rtl"] .label { direction: rtl; }
+.label {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: var(--s4);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+}
+
+/* The trailing pad is the whole trick: each group is exactly
+   (items + gaps + one trailing gap) wide, so two of them side by side make -50%
+   land on an identical frame. Without it the seam is short by half a gap and
+   the right-hand side visibly stutters. */
+.group {
+  display: flex;
+  gap: var(--gap);
+  padding-inline-end: var(--gap);
+  --gap: clamp(36px, 5vw, 72px);
+  animation: slide 42s linear infinite;
+  will-change: transform;
+}
+@keyframes slide {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-100%, 0, 0); }
+}
+
+.group span {
+  font-size: clamp(16px, 1.5vw, 19px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: rgba(0, 0, 0, 0.32);
+  white-space: nowrap;
+  transition: color var(--dur-sm) var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .group span:hover { color: #000; }
+}
+
+/* The shop owner wants the chain turning for everyone. Under a reduced-motion
+   preference it keeps going but at a walking pace, so it reads as alive
+   without being the thing your eye is dragged to. Two classes deep so it
+   outranks the blanket rule in globals.css. */
+@media (prefers-reduced-motion: reduce) {
+  .wrap .group {
+    animation-duration: 150s !important;
+    animation-iteration-count: infinite !important;
+  }
+}

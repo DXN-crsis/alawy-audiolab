@@ -1,0 +1,40 @@
+.footer {
+  border-top: 1px solid var(--border);
+  padding: var(--s6) 0 var(--s4);
+  padding-bottom: calc(max(var(--s4), env(safe-area-inset-bottom)) + var(--barPad));
+  transition: padding-bottom var(--dur-sm) var(--ease);
+}
+.grid { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: var(--s6); margin-bottom: var(--s6); }
+.brand p { font-size: 14px; color: var(--fg-30); margin-top: 14px; max-width: 34ch; }
+.col h5 { margin: 0 0 var(--s3); font-size: 13px; font-weight: 500; color: var(--fg-70); }
+.col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+.col a {
+  position: relative;
+  display: inline-block;
+  font-size: 14px;
+  color: var(--fg-30);
+  transition: color var(--dur-sm) var(--ease);
+}
+.col a::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -2px 0;
+  height: 1px;
+  background: currentColor;
+  scale: 0 1;
+  transform-origin: 0 50%;
+  transition: scale 0.28s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .col a:hover { color: var(--fg); }
+  .col a:hover::after { scale: 1 1; }
+}
+.bottom {
+  display: flex; justify-content: space-between; gap: var(--s4); flex-wrap: wrap;
+  padding-top: var(--s4); border-top: 1px solid var(--border);
+  font-size: 12.5px; color: var(--fg-30);
+}
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr 1fr; gap: var(--s5); }
+  .brand { grid-column: 1 / -1; }
+}

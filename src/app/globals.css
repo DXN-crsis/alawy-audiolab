@@ -1,0 +1,192 @@
+/* Scale from projectreal.gg, recoloured to his blue. Every spacing token is
+   fluid, so one set of numbers covers a 360px phone and a 1920px monitor
+   without a stack of breakpoint overrides. */
+:root {
+  --bg: #000;
+  --bg-2: #060606;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-2: rgba(255, 255, 255, 0.06);
+  --card: #1a1a1a;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-2: rgba(255, 255, 255, 0.14);
+  --fg: #f5f5f7;
+  --fg-70: rgba(245, 245, 247, 0.72);
+  --fg-50: rgba(245, 245, 247, 0.5);
+  --fg-30: rgba(245, 245, 247, 0.3);
+
+  --pop: #5b93ff;
+  --pop-soft: rgba(91, 147, 255, 0.22);
+  --sky: #c8dcf2;
+
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+  --r-2xl: 34px;
+
+  --s2: 8px;
+  --s3: clamp(13px, 1.25vw, 16px);
+  --s4: clamp(18px, 1.9vw, 24px);
+  --s5: clamp(24px, 2.5vw, 32px);
+  --s6: clamp(34px, 3.8vw, 48px);
+  --s7: clamp(44px, 5vw, 64px);
+  --s8: clamp(60px, 7.5vw, 96px);
+  --s9: clamp(76px, 9.4vw, 120px);
+  --pad: clamp(20px, 3vw, 40px);
+  --nav: 64px;
+  --barPad: 0px; /* grows while the checkout bar is on screen */
+
+  --font: var(--font-geist), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: var(--font-geist-mono), ui-monospace, monospace;
+  --ar: var(--font-kufi), var(--font-geist), sans-serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-sm: 0.26s;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* stops iOS Safari inflating body text when the phone turns */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: clamp(16px, 1.05vw, 18px);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden; /* Safari < 16 */
+  overflow-x: clip;
+}
+
+html[dir="rtl"] body {
+  font-family: var(--ar);
+  letter-spacing: 0;
+}
+
+h1, h2, h3, h4, h5 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.03;
+  text-wrap: balance;
+}
+html[dir="rtl"] :is(h1, h2, h3, h4) {
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+img { max-width: 100%; }
+
+:focus-visible {
+  outline: 2px solid var(--pop);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ── shared primitives ─────────────────────────────────── */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-inline: max(var(--pad), env(safe-area-inset-left)) max(var(--pad), env(safe-area-inset-right));
+}
+
+.section { padding: var(--s9) 0; position: relative; }
+section[id] { scroll-margin-top: calc(var(--nav) + 20px); }
+
+.eyebrow { font-size: 13px; font-weight: 500; color: var(--fg-70); margin-bottom: var(--s3); }
+.lede { font-size: clamp(15.5px, 1.1vw, 18px); line-height: 1.55; color: var(--fg-70); max-width: 36em; }
+.h-xl { font-size: clamp(38px, 6.4vw, 76px); }
+.h-lg { font-size: clamp(31px, 4.9vw, 60px); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.center { text-align: center; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  font-size: 14.5px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition: background var(--dur-sm) var(--ease), transform var(--dur-sm) var(--ease),
+    color var(--dur-sm) var(--ease), box-shadow var(--dur-sm) var(--ease);
+}
+.btn-primary { background: var(--fg); color: #000; }
+.btn-primary:hover { background: #fff; box-shadow: 0 10px 30px -12px rgba(255, 255, 255, 0.4); }
+.btn-ghost { background: var(--surface-2); color: var(--fg); }
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.13); }
+.btn-dark { background: #000; color: #fff; }
+.btn-dark:hover { background: #191919; }
+.btn-light { background: rgba(0, 0, 0, 0.08); color: #000; }
+.btn-light:hover { background: rgba(0, 0, 0, 0.16); }
+.btn-sm { height: 36px; padding: 0 15px; font-size: 13px; }
+
+/* Lift only where a real pointer can hover — on a phone it just fires on tap. */
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { transform: translateY(-2px); }
+}
+@media (hover: none) {
+  .btn:active { transform: scale(0.97); }
+}
+
+/* ── scroll reveal ─────────────────────────────────────────
+   One shared IntersectionObserver flips [data-shown]; the browser composites
+   the rest. Gated on [data-js] so the page is fully readable without it. */
+html[data-js] [data-reveal],
+html[data-js] [data-stagger] > * {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+}
+html[data-js] [data-reveal][data-shown],
+html[data-js] [data-stagger][data-shown] > * {
+  opacity: 1;
+  transform: none;
+}
+[data-stagger][data-shown] > *:nth-child(2) { transition-delay: 80ms; }
+[data-stagger][data-shown] > *:nth-child(3) { transition-delay: 160ms; }
+[data-stagger][data-shown] > *:nth-child(4) { transition-delay: 240ms; }
+[data-stagger][data-shown] > *:nth-child(5) { transition-delay: 320ms; }
+[data-stagger][data-shown] > *:nth-child(6) { transition-delay: 400ms; }
+
+/* ── motion budget ─────────────────────────────────────────
+   [data-lite] is set before first paint for low-memory / few-core / Save-Data
+   devices. Ambient loops and blurs go; one-shot entrances stay. */
+html[data-lite] .amb { animation: none !important; filter: none !important; will-change: auto !important; }
+html[data-lite] * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+
+/* What this setting is actually asking for is an end to large and unending
+   motion, not an end to every fade. Kill the loops and the travel; keep the
+   short colour and opacity changes so the interface still answers a click. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .amb { animation: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.25s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.18s !important;
+  }
+  [data-reveal],
+  [data-stagger] > * { transform: none !important; }
+}
