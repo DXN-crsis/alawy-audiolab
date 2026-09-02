@@ -24,7 +24,7 @@ export default function Shot({ alt = "", ...rest }) {
 
   return (
     <>
-      <Image ref={ref} alt={alt} onLoad={() => setReady(true)} {...rest} />
+      <Image ref={ref} alt={alt} draggable={false} onLoad={() => setReady(true)} {...rest} />
       {!ready && (
         <span className={s.load} aria-hidden="true">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
