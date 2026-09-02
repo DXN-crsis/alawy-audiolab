@@ -32,8 +32,8 @@ export default function ProductCard({ product, index }) {
           height={1080}
           priority={index < 4}
           loading={index < 4 ? undefined : "lazy"}
-          quality={82}
-          sizes="(max-width: 540px) 92vw, (max-width: 900px) 46vw, (max-width: 1180px) 31vw, 300px"
+          quality={90}
+          sizes="(max-width: 540px) 46vw, (max-width: 1180px) 32vw, 300px"
         />
       </div>
 

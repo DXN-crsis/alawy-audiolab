@@ -94,7 +94,7 @@ function Sheet({ p, lang, close, add }) {
             alt={`${p.brand} ${p.name}`}
             width={1080}
             height={1350}
-            quality={88}
+            quality={90}
             sizes="(max-width: 880px) 100vw, 460px"
             priority
           />

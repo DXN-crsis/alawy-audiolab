@@ -14,8 +14,9 @@ const Q = T.pick.questions;
 const SHOT = {
   width: 864,
   height: 1080,
-  quality: 82,
-  sizes: "(max-width: 540px) 92vw, (max-width: 900px) 46vw, 340px",
+  quality: 90,
+  // results are one column on a phone, two on a tablet, three across a desktop
+  sizes: "(max-width: 540px) 92vw, (max-width: 900px) 46vw, 400px",
 };
 
 export default function Picker() {
