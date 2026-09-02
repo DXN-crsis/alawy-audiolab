@@ -34,7 +34,7 @@ export default function Hero() {
           audiolab
         </p>
 
-        <p className={s.sub}>{T.hero.tagline.ar}</p>
+        <p className={s.sub}>{t(T.hero.tagline, lang)}</p>
         <p className={s.subEn}>{t(T.hero.sub, lang)}</p>
 
         <div className={s.actions}>

@@ -11,6 +11,7 @@ import s from "./Shop.module.css";
 export default function Shop() {
   const { lang } = useStore();
   const [cat, setCat] = useState("all");
+  const [all, setAll] = useState(false);
   const list = cat === "all" ? PRODUCTS : PRODUCTS.filter((p) => p.cat === cat);
 
   const prices = PRODUCTS.map((p) => p.price);
@@ -42,7 +43,10 @@ export default function Shop() {
                 type="button"
                 className={s.chip}
                 data-on={cat === c.key}
-                onClick={() => setCat(c.key)}
+                onClick={() => {
+                  setCat(c.key);
+                  setAll(false);
+                }}
               >
                 {t(c, lang)}
                 <em>{n}</em>
@@ -51,13 +55,23 @@ export default function Shop() {
           })}
         </Reveal>
 
-        {/* keyed on the filter so the cards replay their entrance on a switch */}
-        <div className={s.grid} key={cat}>
+        {/* Keyed on the filter so the cards replay their entrance on a switch.
+            data-all is what releases the phone-only cap below — the cap is CSS,
+            so the desktop grid is untouched and the hidden cards, being
+            display:none, never fetch their images either. */}
+        <div className={s.grid} key={cat} data-all={all || undefined}>
           {list.map((p, i) => (
             <ProductCard key={p.slug} product={p} index={i} />
           ))}
           {!list.length && <p className={s.empty}>{t(T.shop.empty, lang)}</p>}
         </div>
+
+        {!all && list.length > 8 && (
+          <button className={s.more} type="button" onClick={() => setAll(true)}>
+            {t(T.shop.more, lang)}
+            <em>{list.length}</em>
+          </button>
+        )}
       </div>
     </section>
   );

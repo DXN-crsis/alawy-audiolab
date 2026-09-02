@@ -32,6 +32,7 @@ export const T = {
       ar: "{n} قطعة بالرف، من {lo} الى {hi} دينار.",
     },
     empty: { en: "Nothing here yet.", ar: "ماكو شي هنا." },
+    more: { en: "Show all", ar: "عرض الكل" },
     details: { en: "Details", ar: "التفاصيل" },
     add: { en: "Add to cart", ar: "ضيف للسلة" },
   },
@@ -91,8 +92,8 @@ export const T = {
     eyebrow: { en: "Payment and delivery", ar: "الدفع والتوصيل" },
     title: { en: "How it reaches you.", ar: "شلون توصلك." },
     lede: {
-      en: "Two ways to pay, both taken straight from his page.",
-      ar: "طريقتين للدفع، منقولتين من صفحته.",
+      en: "How you pay, how it travels, and what the warranty covers.",
+      ar: "شلون تدفع، شلون توصل، وشنو يشمل الضمان.",
     },
     items: [
       {

@@ -108,14 +108,16 @@
   animation: rise 0.5s var(--ease) backwards 0.22s;
 }
 
+/* The Arabic family is only reached for when the page is actually Arabic.
+   Setting it unconditionally pulled a 121KB Arabic webfont into every English
+   page load, for one line of text an English reader cannot read anyway. */
 .sub {
-  font-family: var(--ar);
   font-size: clamp(17px, 2vw, 23px);
   color: rgba(0, 0, 0, 0.8);
-  direction: rtl;
   margin-top: var(--s5);
   animation: rise 0.5s var(--ease) backwards 0.28s;
 }
+html[dir="rtl"] .sub { font-family: var(--ar); }
 .subEn {
   font-size: clamp(14.5px, 1.4vw, 17px);
   color: rgba(0, 0, 0, 0.5);
