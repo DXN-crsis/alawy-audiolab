@@ -188,21 +188,28 @@
   background-size: 140px 140px;
 }
 
-/* Asked for explicitly: keep it moving even when the system asks for calm, but
-   slow enough that it reads as atmosphere rather than movement. */
+/* Asked for explicitly, three times: this must be visibly moving even with the
+   system reduce-motion setting on. An earlier pass slowed it to 150s a cycle,
+   which over ten seconds of looking is six percent of one pass — indistinguish-
+   able from a still image, which is exactly the complaint. Barely slower than
+   normal now. */
 @media (prefers-reduced-motion: reduce) {
-  .mesh  { animation-duration: 150s !important; }
-  .o1    { animation-duration: 130s !important; }
-  .o2    { animation-duration: 170s !important; }
-  .o3    { animation-duration: 150s !important; }
-  .o4     { animation-duration: 190s !important; }
-  .sheen  { animation-duration: 160s !important; }
-  .rays   { animation-duration: 400s !important; }
-  .aurora { animation-duration: 140s !important; }
-  .glow   { animation-duration: 40s !important; }
+  .mesh   { animation-duration: 46s !important; }
+  .o1     { animation-duration: 38s !important; }
+  .o2     { animation-duration: 50s !important; }
+  .o3     { animation-duration: 44s !important; }
+  .o4     { animation-duration: 60s !important; }
+  .sheen  { animation-duration: 36s !important; }
+  .rays   { animation-duration: 130s !important; }
+  .aurora { animation-duration: 29s !important; }
+  .glow   { animation-duration: 11s !important; }
   .word {
-    animation-duration: 26s !important;
+    animation-duration: 9s !important;
     animation-iteration-count: infinite !important;
+  }
+  .mark {
+    animation-duration: 0.5s, 8s !important;
+    animation-iteration-count: 1, infinite !important;
   }
 }
 
