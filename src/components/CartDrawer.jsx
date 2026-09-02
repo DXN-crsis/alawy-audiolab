@@ -11,7 +11,7 @@ import s from "./Cart.module.css";
 const EASE = [0.22, 1, 0.36, 1];
 
 export default function CartDrawer() {
-  const { lang, lines, total, count, bump, open, setOpen, peek, toast, checkoutUrl } = useStore();
+  const { lang, lines, total, count, bump, open, setOpen, peek, setPeek, toast, checkoutUrl } = useStore();
   const rtl = lang === "ar";
 
   // the thing just added, else the first line in the cart
@@ -23,10 +23,13 @@ export default function CartDrawer() {
   }, [count]);
 
   useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    // while the product sheet is open on top, Escape belongs to it
+    const onKey = (e) => {
+      if (e.key === "Escape" && !peek) setOpen(false);
+    };
     addEventListener("keydown", onKey);
     return () => removeEventListener("keydown", onKey);
-  }, [setOpen]);
+  }, [setOpen, peek]);
 
   return (
     <>
@@ -83,16 +86,23 @@ export default function CartDrawer() {
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.26, ease: EASE }}
                       >
-                        <span className={s.thumb}>
-                          <Image src={`/products/${l.product.slug}.jpg`} alt="" width={120} height={150} sizes="60px" />
-                        </span>
-                        <span className={s.info}>
-                          <b>
-                            {l.product.brand} {l.product.name}
-                          </b>
-                          {l.variant && <em>{t(l.variant, lang)}</em>}
-                          <span dir="ltr">{money(l.unit)} IQD</span>
-                        </span>
+                        <button
+                          className={s.lineOpen}
+                          type="button"
+                          onClick={() => setPeek(l.product)}
+                          aria-label={`${l.product.brand} ${l.product.name} — ${t(T.shop.details, lang)}`}
+                        >
+                          <span className={s.thumb}>
+                            <Image src={`/products/${l.product.slug}.jpg`} alt="" width={120} height={150} sizes="60px" />
+                          </span>
+                          <span className={s.info}>
+                            <b>
+                              {l.product.brand} {l.product.name}
+                            </b>
+                            {l.variant && <em>{t(l.variant, lang)}</em>}
+                            <span dir="ltr">{money(l.unit)} IQD</span>
+                          </span>
+                        </button>
                         <span className={s.qty}>
                           <button onClick={() => bump(l.key, -1)} type="button" aria-label="−">
                             −

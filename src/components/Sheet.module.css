@@ -1,7 +1,9 @@
+/* Above the cart drawer (140): a line in the cart opens this, and closing it
+   has to put you back in the cart rather than behind it. */
 .scrim {
   position: fixed;
   inset: 0;
-  z-index: 130;
+  z-index: 150;
   background: rgba(0, 0, 0, 0.72);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
@@ -9,7 +11,7 @@
 
 .wrap {
   position: fixed;
-  z-index: 140;
+  z-index: 155;
   inset: 50% auto auto 50%;
   /* the independent translate property, not transform — the entrance animation
      owns transform and would wipe a centring translate out of it */
@@ -90,7 +92,7 @@
 .zoom {
   position: fixed;
   inset: 0;
-  z-index: 160;
+  z-index: 165;
   display: grid;
   place-items: center;
   --pad: clamp(14px, 4vw, 48px);
