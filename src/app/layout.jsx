@@ -11,7 +11,14 @@ const mark = Rubik_Mono_One({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-mark",
-  display: "swap",
+  // "swap" paints the fallback first and switches when the file lands, which
+  // on the wordmark meant watching Arial stretched to 190% play the entrance
+  // animation and then jump. "block" holds the glyphs back instead — for one
+  // preloaded five-letter word that wait is imperceptible, and after the block
+  // period it still falls back rather than staying blank.
+  display: "block",
+  preload: true,
+  adjustFontFallback: true,
 });
 
 export const metadata = {

@@ -39,7 +39,8 @@
   --font: var(--font-geist), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --mono: var(--font-geist-mono), ui-monospace, monospace;
   --ar: var(--font-kufi), var(--font-geist), sans-serif;
-  --mark: var(--font-mark), var(--font-geist), sans-serif;
+  /* --font-mark already carries its own metric-matched fallback */
+  --mark: var(--font-mark), sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-sm: 0.26s;
 }
