@@ -31,10 +31,10 @@ export function StoreProvider({ children }) {
     } catch {}
   }, [cart]);
 
+  // Note there is no write here. Persisting on every render meant the first
+  // page view saved whatever was detected, and every later visit read that
+  // back instead of detecting again — so region detection ran once, ever.
   useEffect(() => {
-    try {
-      localStorage.setItem("alawy-lang", lang);
-    } catch {}
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
   }, [lang]);
@@ -101,7 +101,14 @@ export function StoreProvider({ children }) {
 
   const value = {
     lang,
-    toggleLang: () => setLang((l) => (l === "ar" ? "en" : "ar")),
+    toggleLang: () =>
+      setLang((l) => {
+        const next = l === "ar" ? "en" : "ar";
+        try {
+          localStorage.setItem("alawy-lang-choice", next);
+        } catch {}
+        return next;
+      }),
     lines,
     count,
     total,

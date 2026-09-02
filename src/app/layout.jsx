@@ -29,11 +29,23 @@ export const viewport = {
    and flags weak devices so the ambient animations never start on them. */
 const BOOT = `(function(){try{
 var d=document.documentElement,n=navigator,l;
-try{l=localStorage.getItem('alawy-lang')}catch(e){}
+// only ever written when someone taps the language toggle, so an automatic
+// guess never freezes itself in place
+try{l=localStorage.getItem('alawy-lang-choice')}catch(e){}
 if(l!=='en'&&l!=='ar'){
- var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}
- var L=(n.languages||[n.language||'']).join(',');
- l=(/(^|,)ar\b|(^|,)ar-/i.test(L)||/Baghdad|Kuwait|Riyadh|Dubai|Qatar|Bahrain|Muscat|Beirut|Damascus|Amman|Cairo|Khartoum|Tripoli|Tunis|Algiers|Casablanca/.test(tz))?'ar':'en';
+ var ARAB=/^(IQ|SA|AE|KW|QA|BH|OM|YE|JO|LB|SY|PS|EG|SD|LY|TN|DZ|MA|MR|SO|DJ|KM)$/;
+ var tags=(n.languages&&n.languages.length)?n.languages:[n.language||''];
+ var arab=tags.some(function(t){
+  if(/^ar(-|$)/i.test(t))return true;              // ar, ar-IQ
+  var p=String(t).split('-'),r=p[p.length-1];       // en-IQ, fr-MA
+  return r.length===2&&ARAB.test(r.toUpperCase());
+ });
+ if(!arab){                                         // an English phone in Baghdad
+  var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch(e){}
+  var city=String(tz).split('/').pop();
+  arab=/^(Baghdad|Kuwait|Riyadh|Dubai|Qatar|Bahrain|Muscat|Aden|Beirut|Damascus|Amman|Gaza|Hebron|Cairo|Khartoum|Tripoli|Tunis|Algiers|Casablanca|El_Aaiun|Djibouti|Mogadishu|Nouakchott|Comoro|Egypt|Libya)$/.test(city);
+ }
+ l=arab?'ar':'en';
 }
 d.lang=l;d.dir=l==='ar'?'rtl':'ltr';d.setAttribute('data-js','');
 var c=n.connection||{};
