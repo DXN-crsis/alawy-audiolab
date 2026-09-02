@@ -47,6 +47,7 @@ export const T = {
     pay: { en: "Payment", ar: "الدفع" },
     payVal: { en: "On delivery, or Qi Card", ar: "عند الاستلام او كي كارد" },
     close: { en: "Close", ar: "اغلاق" },
+    zoom: { en: "Open the full banner", ar: "افتح المنشور بالحجم الكامل" },
   },
   guide: {
     eyebrow: { en: "Before you buy", ar: "قبل ما تشتري" },

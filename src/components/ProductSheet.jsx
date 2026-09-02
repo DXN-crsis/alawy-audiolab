@@ -22,14 +22,20 @@ export default function ProductSheet() {
 
 function Sheet({ p, lang, close, add }) {
   const [vi, setVi] = useState(0);
+  const [zoom, setZoom] = useState(false);
   const variant = p.variants?.[vi];
   const price = variant?.price ?? p.price;
 
   useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && close();
+    const onKey = (e) => {
+      if (e.key !== "Escape") return;
+      // step back one layer at a time rather than dropping the whole sheet
+      if (zoom) setZoom(false);
+      else close();
+    };
     addEventListener("keydown", onKey);
     return () => removeEventListener("keydown", onKey);
-  }, [close]);
+  }, [close, zoom]);
 
   const ask = `https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(
     lang === "ar"
@@ -77,7 +83,12 @@ function Sheet({ p, lang, close, add }) {
           </svg>
         </button>
 
-        <div className={s.shot}>
+        <button
+          className={s.shot}
+          type="button"
+          onClick={() => setZoom(true)}
+          aria-label={t(T.sheet.zoom, lang)}
+        >
           <Image
             src={`/products/${p.slug}.jpg`}
             alt={`${p.brand} ${p.name}`}
@@ -87,7 +98,13 @@ function Sheet({ p, lang, close, add }) {
             sizes="(max-width: 880px) 100vw, 460px"
             priority
           />
-        </div>
+          <span className={s.expand} aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none">
+              <path d="M9 4H4v5M15 4h5v5M15 20h5v-5M9 20H4v-5" stroke="currentColor"
+                    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+        </button>
 
         <div className={s.side}>
           <div className={s.scroll}>
@@ -136,6 +153,31 @@ function Sheet({ p, lang, close, add }) {
           </div>
         </div>
       </m.div>
+
+      {zoom && (
+        <div
+          className={s.zoom}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${p.brand} ${p.name}`}
+          onClick={() => setZoom(false)}
+        >
+          <button className={s.zoomClose} type="button" aria-label={t(T.sheet.close, lang)}>
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none">
+              <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+          <Image
+            src={`/products/${p.slug}.jpg`}
+            alt={`${p.brand} ${p.name}`}
+            width={1080}
+            height={1350}
+            quality={92}
+            sizes="(max-width: 900px) 94vw, 780px"
+            priority
+          />
+        </div>
+      )}
     </>
   );
 }
