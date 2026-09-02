@@ -12,7 +12,9 @@
   top: 0;
   inset-inline-end: 0;
   z-index: 140;
-  width: min(420px, 100%);
+  /* never the full width: the strip of scrim left over is the tap-to-close
+     target, and on a phone there is no Escape key to fall back on */
+  width: min(420px, calc(100% - 52px));
   height: 100dvh;
   background: var(--bg-2);
   border-inline-start: 1px solid var(--border);
@@ -32,6 +34,7 @@
 .close {
   width: 34px;
   height: 34px;
+  flex: none;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: none;
@@ -42,6 +45,10 @@
   transition: background var(--dur-sm) var(--ease), color var(--dur-sm) var(--ease);
 }
 .close:hover { background: var(--surface-2); color: var(--fg); }
+/* 34px is a fine mouse target and a poor thumb one */
+@media (pointer: coarse) {
+  .close { width: 44px; height: 44px; }
+}
 
 .body {
   flex: 1;

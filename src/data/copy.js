@@ -21,8 +21,8 @@ export const T = {
   },
   stats: {
     products: { en: "Pieces in stock", ar: "قطعة بالمعرض" },
-    governorates: { en: "Governorates delivered to", ar: "محافظة نوصلها" },
-    brands: { en: "Brands on the shelf", ar: "ماركة بالرف" },
+    governorates: { en: "Governorates", ar: "محافظة نوصلها" },
+    brands: { en: "Brands stocked", ar: "ماركة بالرف" },
   },
   shop: {
     eyebrow: { en: "In stock", ar: "متوفر" },

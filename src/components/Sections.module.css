@@ -108,8 +108,12 @@ html[dir="rtl"] .card h4 { letter-spacing: 0; }
 
 
 
+/* Stacked, these three ran to about 480px of scrolling on a phone for three
+   numbers. Side by side they are one band you take in at a glance. */
 @media (max-width: 700px) {
-  .stats { grid-template-columns: 1fr; }
+  .stat { padding: var(--s5) 8px; }
+  .stat b { font-size: clamp(25px, 7.6vw, 38px); letter-spacing: -0.03em; }
+  .stat span { margin-top: 7px; font-size: 11px; line-height: 1.35; }
 }
 @media (max-width: 900px) {
   .guide { grid-template-columns: 1fr; gap: var(--s6); }
