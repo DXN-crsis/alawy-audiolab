@@ -10,6 +10,14 @@ import s from "./Picker.module.css";
 
 const Q = T.pick.questions;
 
+// one place, because the warm-up below is only useful if it matches exactly
+const SHOT = {
+  width: 864,
+  height: 1080,
+  quality: 82,
+  sizes: "(max-width: 540px) 92vw, (max-width: 900px) 46vw, 340px",
+};
+
 export default function Picker() {
   const { lang } = useStore();
   const [answers, setAnswers] = useState({});
@@ -23,6 +31,20 @@ export default function Picker() {
 
   const ranked = useMemo(() => (done ? recommend(answers) : []), [done, answers]);
   const extra = useMemo(() => (done ? addon(answers, ranked) : null), [done, answers, ranked]);
+
+  // While the last question is on screen, fetch the images every possible
+  // answer could land on. The bytes are small; what is slow is the image
+  // optimiser running cold at the moment the results appear, so this pays that
+  // cost during the seconds it takes to read and click the final option.
+  const warm = useMemo(() => {
+    const pending = Q.filter((q) => answers[q.key] === undefined);
+    if (pending.length !== 1) return [];
+    const slugs = new Set();
+    for (const o of pending[0].options) {
+      for (const r of recommend({ ...answers, [pending[0].key]: o.v })) slugs.add(r.product.slug);
+    }
+    return [...slugs].slice(0, 6);
+  }, [answers]);
 
   const pick = (key, v) => setAnswers((a) => ({ ...a, [key]: v }));
   const back = () =>
@@ -49,6 +71,16 @@ export default function Picker() {
           <Results ranked={ranked} extra={extra} lang={lang} reset={() => setAnswers({})} />
         ) : (
           <Question key={at} q={Q[at]} at={at} lang={lang} onPick={pick} onBack={back} />
+        )}
+
+        {warm.length > 0 && (
+          <div className={s.warm} aria-hidden="true">
+            {warm.map((slug) => (
+              // eager, or next/image lazy-loads it and a 1px off-screen box
+              // never enters the viewport, so nothing is ever fetched
+              <Image key={slug} src={`/products/${slug}.jpg`} alt="" loading="eager" {...SHOT} />
+            ))}
+          </div>
         )}
       </div>
     </div>
@@ -162,11 +194,8 @@ function Results({ ranked, extra, lang, reset }) {
               <Image
                 src={`/products/${r.product.slug}.jpg`}
                 alt={`${r.product.brand} ${r.product.name}`}
-                width={864}
-                height={1080}
-                quality={82}
-                priority={i === 0}
-                sizes="(max-width: 540px) 92vw, (max-width: 900px) 46vw, 340px"
+                priority
+                {...SHOT}
               />
             </button>
 

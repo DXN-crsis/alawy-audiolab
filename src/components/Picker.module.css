@@ -75,11 +75,11 @@ html[dir="rtl"] .q { letter-spacing: 0; }
   transition: background var(--dur-sm) var(--ease), border-color var(--dur-sm) var(--ease),
     color var(--dur-sm) var(--ease);
 }
-.option svg { flex: none; opacity: 0; transition: opacity var(--dur-sm) var(--ease), translate var(--dur-sm) var(--ease); }
-html[dir="rtl"] .option svg { transform: scaleX(-1); }
+.option > svg { flex: none; opacity: 0; transition: opacity var(--dur-sm) var(--ease), translate var(--dur-sm) var(--ease); }
+html[dir="rtl"] .option > svg { transform: scaleX(-1); }
 .option:hover { background: var(--surface-2); border-color: var(--border-2); color: var(--fg); }
-.option:hover svg { opacity: 1; translate: 3px 0; }
-html[dir="rtl"] .option:hover svg { translate: -3px 0; }
+.option:hover > svg { opacity: 1; translate: 3px 0; }
+html[dir="rtl"] .option:hover > svg { translate: -3px 0; }
 .option:active { transform: scale(0.99); }
 
 /* multi-select: the tick box is the state, the border just follows it */
@@ -116,6 +116,16 @@ html[dir="rtl"] .option:hover svg { translate: -3px 0; }
 .back:hover { color: var(--fg-70); }
 
 .none { font-size: 16px; color: var(--fg-70); margin-bottom: var(--s5); }
+
+/* Off-screen, not display:none — a hidden element is not fetched. */
+.warm {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* ── the three ──────────────────────────────────────────── */
 @keyframes resultIn {
