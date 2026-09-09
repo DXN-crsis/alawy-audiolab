@@ -117,17 +117,7 @@ html[dir="rtl"] .option:hover > svg { translate: -3px 0; }
 
 .none { font-size: 16px; color: var(--fg-70); margin-bottom: var(--s5); }
 
-/* Off-screen, not display:none — a hidden element is not fetched. */
-.warm {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* ── the three ──────────────────────────────────────────── */
+/* ── the three ────────────────────────────── */
 @keyframes resultIn {
   from { opacity: 0; transform: translate3d(0, 18px, 0); }
   to   { opacity: 1; transform: none; }
@@ -157,49 +147,60 @@ html[dir="rtl"] .option:hover > svg { translate: -3px 0; }
 .result:hover { border-color: var(--border-2); }
 .result[data-first="true"]:hover { border-color: var(--pop); }
 
+.open {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: inherit;
+}
+
 .rank {
   position: absolute;
   top: 13px;
-  inset-inline-start: 13px;
+  inset-inline-end: 13px;
   z-index: 2;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
   display: grid;
   place-items: center;
   font-family: var(--mono);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  background: rgba(0, 0, 0, 0.72);
-  color: var(--fg);
-  border: 1px solid var(--border-2);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  background: var(--surface-2);
+  color: var(--fg-50);
+  border: 1px solid var(--border);
 }
 .result[data-first="true"] .rank { background: var(--pop); color: #04122e; border-color: transparent; }
 
 .shot {
   position: relative;
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  cursor: pointer;
   aspect-ratio: 4 / 5;
-  background: #fff; /* his banners are white; leave his artwork alone */
+  background: #0b0e12;
   overflow: hidden;
 }
-.shot img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s var(--ease); }
-@media (hover: hover) and (pointer: fine) {
-  .result:hover .shot img { transform: scale(1.04); }
+.shot img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+.body { padding: var(--s4); display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.name { font-size: 19px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.15; }
+.cpu { font-family: var(--mono); font-size: 12px; color: var(--fg-50); margin-top: -6px; }
+
+.specs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px; }
+.specs li {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--fg-50);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 7px;
+  white-space: nowrap;
 }
+html[dir="rtl"] .specs li { font-family: var(--ar); font-size: 11px; }
 
-.body { padding: var(--s4); display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.brand { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-30); }
-.name { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
-html[dir="rtl"] .name { letter-spacing: 0; }
-
-.why { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.why { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
 .why li {
   display: flex;
   align-items: center;
@@ -211,6 +212,8 @@ html[dir="rtl"] .name { letter-spacing: 0; }
 .why svg { flex: none; color: var(--pop); }
 
 .foot {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -221,29 +224,9 @@ html[dir="rtl"] .name { letter-spacing: 0; }
 .price { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .price small { font-size: 11px; font-weight: 400; color: var(--fg-30); }
 
-/* ── the one add-on ─────────────────────────────────────── */
-.extra {
-  margin-top: var(--s4);
-  display: flex;
-  align-items: center;
-  gap: var(--s4);
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  background: var(--surface);
-}
-.extra > div { flex: 1; min-width: 0; display: grid; gap: 3px; }
-.extraThumb { width: 44px; height: 55px; border-radius: var(--r-sm); overflow: hidden; background: var(--card); flex: none; }
-.extraThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.extraLabel { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-30); }
-html[dir="rtl"] .extraLabel { letter-spacing: 0; text-transform: none; }
-.extra b { font-size: 14px; font-weight: 500; }
-
 .ends { margin-top: var(--s6); display: flex; gap: 10px; flex-wrap: wrap; }
 
 @media (max-width: 620px) {
   .card { padding: var(--s5); }
   .option { padding: 15px 16px; font-size: 15px; }
-  .extra { flex-wrap: wrap; }
-  .extra > div { flex-basis: 100%; order: -1; }
 }

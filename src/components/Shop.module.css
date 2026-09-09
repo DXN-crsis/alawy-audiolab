@@ -6,12 +6,22 @@
   flex-wrap: wrap;
   margin-bottom: var(--s6);
 }
+.lede { max-width: 30em; display: grid; gap: 10px; }
+
+/* Said once, at the top, instead of on eleven cards. */
+.caveat {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fg-30);
+  border-inline-start: 2px solid var(--pop);
+  padding-inline-start: 11px;
+}
 
 .filters {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: var(--s6);
+  margin-bottom: var(--s5);
 }
 .chip {
   height: 38px;
@@ -33,11 +43,9 @@
 .chip[data-on="true"] { background: var(--fg); border-color: var(--fg); color: #000; }
 .chip em { font-style: normal; font-family: var(--mono); font-size: 11px; opacity: 0.55; }
 
-/* auto-fit does the responsive work: the column count follows the space, so
-   there is no breakpoint list to keep in sync with the card width */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: var(--s3);
 }
 .empty { grid-column: 1 / -1; text-align: center; padding: var(--s8) 0; color: var(--fg-30); }
@@ -60,8 +68,24 @@
   transition: border-color var(--dur-sm) var(--ease), transform var(--dur-sm) var(--ease);
 }
 
-/* full-card hit area for the detail sheet; the variant and add controls sit
-   above it so they still get their own clicks */
+/* Their posters are portrait and every number on one sits near an edge, so the
+   whole poster is shown on its own dark ground. Never cover: cropping a poster
+   is cropping the price off it. */
+.shot {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: #0b0e12;
+  overflow: hidden;
+}
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.5s var(--ease);
+}
+
+/* full-card hit area for the detail sheet; the add control sits above it */
 .open {
   position: absolute;
   inset: 0;
@@ -72,63 +96,46 @@
   border-radius: inherit;
 }
 
-.shot {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  background: #fff; /* his banners are white — don't tint his artwork */
-  overflow: hidden;
-}
-.shot img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.5s var(--ease);
-}
-
 @media (hover: hover) and (pointer: fine) {
   .card:hover { border-color: var(--border-2); transform: translateY(-4px); }
-  .card:hover .shot img { transform: scale(1.045); }
+  .card:hover .shot img { transform: scale(1.035); }
 }
 .card:focus-within { border-color: var(--border-2); }
 
-.body {
-  padding: var(--s4);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1;
-}
-.brand { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-30); }
-.name { font-size: clamp(16px, 1.3vw, 18px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
-html[dir="rtl"] .name { letter-spacing: 0; }
-
-.meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
-.meta i {
-  font-style: normal;
-  font-family: var(--mono);
-  font-size: 10.5px;
-  color: var(--fg-50);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 3px 7px;
-}
-html[dir="rtl"] .meta i { font-family: var(--ar); font-size: 11px; }
-
-.variants { position: relative; z-index: 2; display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
-.variant {
-  border: 1px solid var(--border);
-  background: none;
-  color: var(--fg-50);
+/* Same glass as the sheet's own controls, so it reads as part of the picture
+   rather than a sticker stuck on top of it. */
+.tag {
+  position: absolute;
+  top: 11px;
+  inset-inline-start: 11px;
+  z-index: 2;
+  padding: 4px 10px;
   border-radius: 999px;
-  padding: 5px 11px;
-  font-size: 11.5px;
-  cursor: pointer;
-  transition: border-color var(--dur-sm) var(--ease), color var(--dur-sm) var(--ease),
-    background var(--dur-sm) var(--ease);
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
 }
-.variant:hover { color: var(--fg); border-color: var(--border-2); }
-.variant[data-on="true"] { background: var(--surface-2); border-color: var(--border-2); color: var(--fg); }
+html[dir="rtl"] .tag { letter-spacing: 0; }
+
+.body { padding: var(--s4); display: flex; flex-direction: column; flex: 1; }
+.name {
+  font-size: clamp(17px, 1.5vw, 20px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+.cpu {
+  margin-top: 5px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  color: var(--fg-50);
+}
 
 .foot {
   position: relative;
@@ -138,16 +145,16 @@ html[dir="rtl"] .meta i { font-family: var(--ar); font-size: 11px; }
   justify-content: space-between;
   gap: 10px;
   margin-top: auto;
-  padding-top: var(--s3);
+  padding-top: var(--s4);
 }
 .price {
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.price small { font-size: 11px; font-weight: 400; color: var(--fg-30); margin-inline-start: 3px; }
+.price small { font-size: 11px; font-weight: 400; color: var(--fg-30); margin-inline-start: 4px; }
 
 .add {
   width: 38px;
@@ -166,14 +173,8 @@ html[dir="rtl"] .meta i { font-family: var(--ar); font-size: 11px; }
 .add:hover { background: var(--fg); color: #000; border-color: var(--fg); }
 .add:active { transform: scale(0.92); }
 
-/* cards stay in the 200-300px band at every width: three across a tablet,
-   two across a phone, never one huge card on its own row */
-@media (max-width: 900px) {
-  .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-}
-/* A phone showed all 23 as 12 rows of tall cards — about six and a half
-   screens of scrolling before the next section. Eight to start, the rest a tap
-   away. Desktop, where the grid is four across, is deliberately left alone. */
+/* Eleven cards is four screens of scrolling on a phone. Six to start, the
+   rest a tap away; the desktop grid is deliberately left alone. */
 .more {
   display: none;
   width: 100%;
@@ -190,17 +191,16 @@ html[dir="rtl"] .meta i { font-family: var(--ar); font-size: 11px; }
   font-weight: 500;
   cursor: pointer;
 }
-.more em {
-  font-style: normal;
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--fg-30);
-}
+.more em { font-style: normal; font-family: var(--mono); font-size: 12px; color: var(--fg-30); }
 .more:active { transform: scale(0.99); }
 
-@media (max-width: 540px) {
-  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+@media (max-width: 620px) {
+  .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .body { padding: var(--s3); }
-  .grid:not([data-all]) > *:nth-child(n + 9) { display: none; }
+  .name { font-size: 15px; }
+  .cpu { font-size: 10.5px; }
+  .price { font-size: 16px; }
+  .add { width: 34px; height: 34px; }
+  .grid:not([data-all]) > *:nth-child(n + 7) { display: none; }
   .more { display: flex; }
 }

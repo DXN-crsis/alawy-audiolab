@@ -16,10 +16,10 @@
   /* the independent translate property, not transform — the entrance animation
      owns transform and would wipe a centring translate out of it */
   translate: -50% -50%;
-  width: min(940px, calc(100vw - 2 * var(--pad)));
+  width: min(900px, calc(100vw - 2 * var(--pad)));
   max-height: min(760px, calc(100dvh - 2 * var(--s5)));
   display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
   background: var(--bg-2);
   border: 1px solid var(--border-2);
   border-radius: var(--r-2xl);
@@ -51,14 +51,16 @@
 
 .shot {
   position: relative;
-  background: #fff;
+  background: #0b0e12;
   display: block;
   padding: 0;
   border: 0;
   cursor: zoom-in;
   overflow: hidden;
 }
-.shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Their posters are square and every number on them sits near an edge, so
+   they are shown whole on their own dark ground rather than cropped to fill. */
+.shot img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 /* the affordance — always there on touch, on hover for a pointer */
 .expand {
@@ -115,7 +117,7 @@
   object-fit: contain;
   display: block;
   border-radius: var(--r-md);
-  background: #fff;
+  background: #0b0e12;
 }
 .zoomClose {
   position: absolute;
@@ -148,12 +150,28 @@
 }
 
 .name {
-  font-size: clamp(24px, 2.6vw, 32px);
+  font-size: clamp(23px, 2.4vw, 30px);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  margin-bottom: var(--s4);
+  letter-spacing: -0.035em;
 }
-html[dir="rtl"] .name { letter-spacing: 0; }
+.sub {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--fg-50);
+  margin: 7px 0 var(--s4);
+}
+
+.post {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: var(--s4);
+  font-size: 13px;
+  color: var(--fg-50);
+  transition: color var(--dur-sm) var(--ease);
+}
+.post:hover { color: var(--fg); }
+html[dir="rtl"] .post svg { transform: scaleX(-1); }
 
 .picker { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: var(--s4); }
 .picker button {
@@ -233,8 +251,7 @@ html[dir="rtl"] .name { letter-spacing: 0; }
     border-radius: var(--r-2xl) var(--r-2xl) 0 0;
     border-bottom: 0;
   }
-  .shot { aspect-ratio: 16 / 10; cursor: zoom-in; }
-  .shot img { object-position: center 42%; }
+  .shot { aspect-ratio: 4 / 3; cursor: zoom-in; }
   .buttons { flex: 1 1 100%; justify-content: stretch; }
   .buttons :global(.btn) { flex: 1; }
 }

@@ -19,45 +19,7 @@
 }
 .stat span { display: block; margin-top: 12px; font-size: 13.5px; color: var(--fg-50); }
 
-/* Guide -------------------------------------------------- */
-.guide {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--s8);
-  align-items: start;
-}
-.acc { border-top: 1px solid var(--border); }
-.row { border-bottom: 1px solid var(--border); }
-.q {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s4);
-  padding: var(--s5) 0;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  color: var(--fg);
-  text-align: start;
-  font-size: clamp(17px, 1.9vw, 25px);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  transition: color var(--dur-sm) var(--ease);
-}
-html[dir="rtl"] .q { letter-spacing: 0; }
-.q:hover { color: var(--fg-70); }
-.q svg { width: 16px; height: 16px; flex: none; color: var(--fg-50); }
-.a { overflow: hidden; }
-.aInner {
-  padding: 0 0 var(--s5);
-  font-size: 15px;
-  line-height: 1.62;
-  color: var(--fg-50);
-  max-width: 48ch;
-}
-
-/* Delivery ----------------------------------------------- */
+/* Buying ------------------------------------------------ */
 .dHead {
   display: flex;
   align-items: flex-end;
@@ -114,9 +76,6 @@ html[dir="rtl"] .card h4 { letter-spacing: 0; }
   .stat { padding: var(--s5) 8px; }
   .stat b { font-size: clamp(25px, 7.6vw, 38px); letter-spacing: -0.03em; }
   .stat span { margin-top: 7px; font-size: 11px; line-height: 1.35; }
-}
-@media (max-width: 900px) {
-  .guide { grid-template-columns: 1fr; gap: var(--s6); }
 }
 
 /* On a phone these become one block in the same treatment as the stats band

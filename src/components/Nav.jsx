@@ -9,9 +9,9 @@ import s from "./Nav.module.css";
 
 // rooted at "/" so they work from the picker page too
 const LINKS = [
-  ["/#shop", T.nav.shop],
-  ["/#guide", T.nav.guide],
-  ["/#delivery", T.nav.delivery],
+  ["/#builds", T.nav.builds],
+  ["/#parts", T.nav.parts],
+  ["/#buy", T.nav.buy],
   ["/#contact", T.nav.contact],
 ];
 
@@ -51,7 +51,7 @@ export default function Nav() {
     <>
       <nav className={[s.nav, solid && s.scrolled, onDark && s.dark].filter(Boolean).join(" ")}>
         <div className={s.inner}>
-          <a href="/" className={s.logo} aria-label="ALAWY audiolab">
+          <a href="/" className={s.logo} aria-label="Eagle Store">
             <Logo size={21} />
           </a>
 

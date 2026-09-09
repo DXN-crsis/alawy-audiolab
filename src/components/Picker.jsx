@@ -1,24 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import Shot from "./Shot";
 import { useStore } from "@/lib/store";
-import { recommend, addon } from "@/lib/recommend";
-import { money, SHOP } from "@/data/products";
+import { recommend } from "@/lib/recommend";
+import { money, specsOf, SHOP } from "@/data/products";
 import { T, t } from "@/data/copy";
 import s from "./Picker.module.css";
 
 const Q = T.pick.questions;
-
-// one place, because the warm-up below is only useful if it matches exactly
-const SHOT = {
-  width: 864,
-  height: 1080,
-  quality: 90,
-  // results are one column on a phone, two on a tablet, three across a desktop
-  sizes: "(max-width: 540px) 92vw, (max-width: 900px) 46vw, 400px",
-};
 
 export default function Picker() {
   const { lang } = useStore();
@@ -32,21 +22,6 @@ export default function Picker() {
   const done = at === -1;
 
   const ranked = useMemo(() => (done ? recommend(answers) : []), [done, answers]);
-  const extra = useMemo(() => (done ? addon(answers, ranked) : null), [done, answers, ranked]);
-
-  // While the last question is on screen, fetch the images every possible
-  // answer could land on. The bytes are small; what is slow is the image
-  // optimiser running cold at the moment the results appear, so this pays that
-  // cost during the seconds it takes to read and click the final option.
-  const warm = useMemo(() => {
-    const pending = Q.filter((q) => answers[q.key] === undefined);
-    if (pending.length !== 1) return [];
-    const slugs = new Set();
-    for (const o of pending[0].options) {
-      for (const r of recommend({ ...answers, [pending[0].key]: o.v })) slugs.add(r.product.slug);
-    }
-    return [...slugs].slice(0, 6);
-  }, [answers]);
 
   const pick = (key, v) => setAnswers((a) => ({ ...a, [key]: v }));
   const back = () =>
@@ -70,19 +45,9 @@ export default function Picker() {
             gating the next question on the last one finishing, and anything
             that stalls the frame loop then leaves the page blank. */}
         {done ? (
-          <Results ranked={ranked} extra={extra} lang={lang} reset={() => setAnswers({})} />
+          <Results ranked={ranked} lang={lang} reset={() => setAnswers({})} />
         ) : (
           <Question key={at} q={Q[at]} at={at} lang={lang} onPick={pick} onBack={back} />
-        )}
-
-        {warm.length > 0 && (
-          <div className={s.warm} aria-hidden="true">
-            {warm.map((slug) => (
-              // eager, or next/image lazy-loads it and a 1px off-screen box
-              // never enters the viewport, so nothing is ever fetched
-              <Image key={slug} src={`/products/${slug}.jpg`} alt="" loading="eager" {...SHOT} />
-            ))}
-          </div>
         )}
       </div>
     </div>
@@ -161,7 +126,7 @@ function Question({ q, at, lang, onPick, onBack }) {
   );
 }
 
-function Results({ ranked, extra, lang, reset }) {
+function Results({ ranked, lang, reset }) {
   const { add, setPeek } = useStore();
 
   if (!ranked.length) {
@@ -183,77 +148,69 @@ function Results({ ranked, extra, lang, reset }) {
   return (
     <>
       <div className={s.results}>
-        {ranked.map((r, i) => (
-          <article className={s.result} key={r.product.slug} data-first={i === 0} style={{ "--i": i }}>
-            <span className={s.rank} aria-label={`${i + 1}`}>{i + 1}</span>
-
-            <button
-              className={s.shot}
-              type="button"
-              onClick={() => setPeek(r.product)}
-              aria-label={`${r.product.brand} ${r.product.name}`}
-            >
-              <Shot
-                src={`/products/${r.product.slug}.jpg`}
-                alt={`${r.product.brand} ${r.product.name}`}
-                priority
-                {...SHOT}
+        {ranked.map((r, i) => {
+          const p = r.product;
+          return (
+            <article className={s.result} key={p.slug} data-first={i === 0} style={{ "--i": i }}>
+              <button
+                className={s.open}
+                type="button"
+                onClick={() => setPeek(p)}
+                aria-label={`${p.name} — ${p.cpu}`}
               />
-            </button>
+              <span className={s.rank} aria-label={`${i + 1}`}>{i + 1}</span>
 
-            <div className={s.body}>
-              <span className={s.brand}>{r.product.brand}</span>
-              <h3 className={s.name}>{r.product.name}</h3>
-
-              <ul className={s.why}>
-                {r.why.slice(0, 4).map((k) => (
-                  <li key={k}>
-                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" aria-hidden="true">
-                      <path d="m5 13 4 4L19 7" stroke="currentColor" strokeWidth="2.4"
-                            strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    {t(T.pick.reasons[k], lang)}
-                  </li>
-                ))}
-              </ul>
-
-              <div className={s.foot}>
-                <span className={s.price} dir="ltr">
-                  {money(r.product.price)} <small>IQD</small>
-                </span>
-                <button
-                  className="btn btn-sm btn-primary"
-                  type="button"
-                  onClick={() => add(r.product.slug, 0, `${r.product.brand} ${r.product.name}`)}
-                >
-                  {t(T.shop.add, lang)}
-                </button>
+              <div className={s.shot}>
+                <Shot
+                  src={`/builds/${p.slug}.jpg`}
+                  alt={`${p.name} — ${p.cpu}`}
+                  width={1000}
+                  height={1250}
+                  quality={82}
+                  priority={i === 0}
+                  sizes="(max-width: 620px) 92vw, 330px"
+                />
               </div>
-            </div>
-          </article>
-        ))}
-      </div>
 
-      {extra && (
-        <div className={s.extra}>
-          <span className={s.extraThumb}>
-            <Image src={`/products/${extra.slug}.jpg`} alt="" width={160} height={200} sizes="56px" />
-          </span>
-          <div>
-            <span className={s.extraLabel}>{t(T.pick.addon, lang)}</span>
-            <b>
-              {extra.brand} {extra.name} — <span dir="ltr">{money(extra.price)} IQD</span>
-            </b>
-          </div>
-          <button
-            className="btn btn-sm btn-ghost"
-            type="button"
-            onClick={() => add(extra.slug, 0, `${extra.brand} ${extra.name}`)}
-          >
-            {t(T.shop.add, lang)}
-          </button>
-        </div>
-      )}
+              <div className={s.body}>
+                <h3 className={s.name}>{p.name}</h3>
+                <span className={s.cpu}>{p.cpu}</span>
+
+                <ul className={s.specs}>
+                  {specsOf(p, lang).slice(0, 4).map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+
+                <ul className={s.why}>
+                  {r.why.slice(0, 3).map((k) => (
+                    <li key={k}>
+                      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" aria-hidden="true">
+                        <path d="m5 13 4 4L19 7" stroke="currentColor" strokeWidth="2.4"
+                              strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      {t(T.pick.reasons[k], lang)}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className={s.foot}>
+                  <span className={s.price} dir="ltr">
+                    {money(p.price)} <small>IQD</small>
+                  </span>
+                  <button
+                    className="btn btn-sm btn-primary"
+                    type="button"
+                    onClick={() => add(p.slug, 0, p.name)}
+                  >
+                    {t(T.shop.add, lang)}
+                  </button>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
 
       <div className={s.ends}>
         <button className="btn btn-ghost" type="button" onClick={reset}>

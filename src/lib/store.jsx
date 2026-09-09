@@ -7,7 +7,7 @@ import { bySlug, money, SHOP } from "@/data/products";
 export const cartKey = (slug, vi = 0) => (vi ? `${slug}#${vi}` : slug);
 
 const Ctx = createContext(null);
-const KEY = "alawy-cart";
+const KEY = "eagle-cart";
 
 export function StoreProvider({ children }) {
   const [lang, setLang] = useState("ar");
@@ -102,8 +102,7 @@ export function StoreProvider({ children }) {
     if (!lines.length) return null;
     const head = lang === "ar" ? "السلام عليكم، اريد اطلب:" : "Hi, I'd like to order:";
     const body = lines.map((l) => {
-      const v = l.variant ? ` (${l.variant[lang] || l.variant.en})` : "";
-      return `• ${l.product.brand} ${l.product.name}${v} ×${l.qty} — ${money(l.unit * l.qty)} IQD`;
+      return `• ${l.product.name} · ${l.product.cpu} ×${l.qty} — ${money(l.unit * l.qty)} IQD`;
     });
     const foot = `${lang === "ar" ? "المجموع" : "Total"}: ${money(total)} IQD`;
     return `https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent([head, ...body, foot].join("\n"))}`;
@@ -115,7 +114,7 @@ export function StoreProvider({ children }) {
       setLang((l) => {
         const next = l === "ar" ? "en" : "ar";
         try {
-          localStorage.setItem("alawy-lang-choice", next);
+          localStorage.setItem("eagle-lang-choice", next);
         } catch {}
         return next;
       }),

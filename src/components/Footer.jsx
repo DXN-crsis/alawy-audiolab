@@ -20,28 +20,28 @@ export default function Footer() {
             </a>
             <p>
               {ar
-                ? "اوديو لاب — سماعات احترافية وملحقاتها. بغداد، العراق."
-                : "Audiolab — professional earphones and accessories. Baghdad, Iraq."}
+                ? "النسر ستور — تجميعات گيمنگ وقطع كمبيوتر، جديد ومستعمل. بغداد، العراق."
+                : "Eagle Store — gaming builds and computer parts, new and used. Baghdad, Iraq."}
             </p>
           </div>
 
           <div className={s.col}>
             <h5>{t(T.footer.shop, lang)}</h5>
             <ul>
-              <li><a href="#shop">{ar ? "كل المنتجات" : "All products"}</a></li>
-              <li><a href="#shop">{ar ? "سماعات" : "IEMs"}</a></li>
-              <li><a href="#shop">{ar ? "دنكل داك" : "DAC / dongles"}</a></li>
-              <li><a href="#shop">{ar ? "ملحقات" : "Accessories"}</a></li>
+              <li><a href="#builds">{ar ? "كل التجميعات" : "All builds"}</a></li>
+              <li><a href="#builds">{ar ? "رايزن" : "AMD Ryzen"}</a></li>
+              <li><a href="#builds">{ar ? "انتل" : "Intel Core"}</a></li>
+              <li><a href="#parts">{ar ? "القطع" : "Parts"}</a></li>
             </ul>
           </div>
 
           <div className={s.col}>
             <h5>{t(T.footer.help, lang)}</h5>
             <ul>
-              <li><a href="#guide">{ar ? "دليل الشراء" : "Buying guide"}</a></li>
-              <li><a href="#delivery">{ar ? "التوصيل" : "Delivery"}</a></li>
-              <li><a href="#delivery">{ar ? "الدفع" : "Payment"}</a></li>
-              <li><a href="#delivery">{ar ? "الضمان" : "Warranty"}</a></li>
+              <li><a href="/pick">{ar ? "ساعدني اختار" : "Help me pick"}</a></li>
+              <li><a href="#buy">{ar ? "الضمان" : "Warranty"}</a></li>
+              <li><a href="#buy">{ar ? "التوصيل" : "Delivery"}</a></li>
+              <li><a href="#contact">{ar ? "الفروع" : "Branches"}</a></li>
             </ul>
           </div>
 
@@ -49,8 +49,8 @@ export default function Footer() {
             <h5>{t(T.footer.contact, lang)}</h5>
             <ul>
               <li><a href={`https://wa.me/${SHOP.whatsapp}`} target="_blank" rel="noopener">WhatsApp</a></li>
-              <li><a href={SHOP.telegram} target="_blank" rel="noopener">Telegram</a></li>
               <li><a href={SHOP.instagram} target="_blank" rel="noopener">Instagram</a></li>
+              <li><a href={SHOP.facebook} target="_blank" rel="noopener">Facebook</a></li>
               <li><a className="mono" href={`tel:+${SHOP.whatsapp}`} dir="ltr">{SHOP.phone}</a></li>
             </ul>
           </div>

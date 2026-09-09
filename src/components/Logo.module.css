@@ -1,0 +1,41 @@
+/* --m is the drawn width of the emblem. Callers set it as a number of pixels;
+   the hero overrides it with a clamp so the mark scales with the viewport. */
+.mark {
+  display: inline-flex;
+  flex: none;
+  line-height: 0;
+}
+.mark img {
+  width: var(--m, 24px);
+  height: auto;
+  display: block;
+}
+
+/* Their emblem is white and cyan on a dark disc — that is how it is drawn on
+   their own cover, and it is the only way the white shield survives the pale
+   hero behind it. */
+.disc {
+  display: inline-grid;
+  place-items: center;
+  width: calc(var(--m, 24px) * 1.66);
+  height: calc(var(--m, 24px) * 1.66);
+  border-radius: 50%;
+  background: #0d1116;
+  box-shadow: 0 12px 34px -14px rgba(0, 0, 0, 0.75);
+}
+
+.lockup { display: inline-flex; align-items: center; gap: 0.42em; }
+.words { display: grid; gap: 3px; line-height: 1; }
+.words b {
+  font-family: var(--mark);
+  font-weight: 400;
+  font-size: 0.64em;
+  letter-spacing: 0.02em;
+}
+.words em {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.4em;
+  letter-spacing: 0.15em;
+  opacity: 0.5;
+}

@@ -30,9 +30,10 @@ html[dir="rtl"] .label { direction: rtl; }
    the right-hand side visibly stutters. */
 .group {
   display: flex;
+  align-items: center;
   gap: var(--gap);
   padding-inline-end: var(--gap);
-  --gap: clamp(36px, 5vw, 72px);
+  --gap: clamp(30px, 4vw, 58px);
   animation: slide 42s linear infinite;
   will-change: transform;
 }
@@ -41,17 +42,19 @@ html[dir="rtl"] .label { direction: rtl; }
   to   { transform: translate3d(-100%, 0, 0); }
 }
 
-.group span {
-  font-size: clamp(16px, 1.5vw, 19px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: rgba(0, 0, 0, 0.32);
-  white-space: nowrap;
+/* simple-icons paths are normalised into a 24x24 box, so a wordmark like ASUS
+   sits as a short band inside it. One box size for all five keeps the chain
+   evenly spaced whatever shape each mark happens to be. */
+.group svg {
+  width: clamp(52px, 5vw, 68px);
+  height: clamp(52px, 5vw, 68px);
+  flex: none;
+  color: rgba(0, 0, 0, 0.34);
   transition: color var(--dur-sm) var(--ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .group span:hover { color: #000; }
+  .group svg:hover { color: #000; }
 }
 
 /* The shop owner wants the chain turning for everyone. Under a reduced-motion

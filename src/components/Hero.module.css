@@ -75,11 +75,9 @@
 .mark {
   display: flex;
   justify-content: center;
-  color: #000;
   margin-bottom: clamp(14px, 1.8vw, 22px);
   animation: pop 0.5s var(--ease) backwards;
 }
-.mark svg { width: clamp(52px, 7vw, 78px); height: auto; }
 
 .word {
   font-family: var(--mark);

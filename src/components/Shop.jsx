@@ -21,16 +21,17 @@ export default function Shop() {
     .replace("{hi}", money(Math.max(...prices)));
 
   return (
-    <section className="section" id="shop">
+    <section className="section" id="builds">
       <div className="container">
         <Reveal className={s.head}>
           <div>
             <p className="eyebrow">{t(T.shop.eyebrow, lang)}</p>
             <h2 className="h-xl">{t(T.shop.title, lang)}</h2>
           </div>
-          <p className="lede" style={{ maxWidth: "24em" }}>
-            {lede}
-          </p>
+          <div className={s.lede}>
+            <p className="lede">{lede}</p>
+            <p className={s.caveat}>{t(T.shop.caveat, lang)}</p>
+          </div>
         </Reveal>
 
         <Reveal className={s.filters}>
@@ -57,8 +58,7 @@ export default function Shop() {
 
         {/* Keyed on the filter so the cards replay their entrance on a switch.
             data-all is what releases the phone-only cap below — the cap is CSS,
-            so the desktop grid is untouched and the hidden cards, being
-            display:none, never fetch their images either. */}
+            so the desktop grid is untouched. */}
         <div className={s.grid} key={cat} data-all={all || undefined}>
           {list.map((p, i) => (
             <ProductCard key={p.slug} product={p} index={i} />
@@ -66,7 +66,7 @@ export default function Shop() {
           {!list.length && <p className={s.empty}>{t(T.shop.empty, lang)}</p>}
         </div>
 
-        {!all && list.length > 8 && (
+        {!all && list.length > 6 && (
           <button className={s.more} type="button" onClick={() => setAll(true)}>
             {t(T.shop.more, lang)}
             <em>{list.length}</em>

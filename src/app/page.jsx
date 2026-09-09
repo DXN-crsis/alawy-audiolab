@@ -1,10 +1,9 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import Stats from "@/components/Stats";
 import Shop from "@/components/Shop";
-import Guide from "@/components/Guide";
-import Delivery from "@/components/Delivery";
-import Social from "@/components/Social";
+import Parts from "@/components/Parts";
+import Buy from "@/components/Buy";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import ProductSheet from "@/components/ProductSheet";
@@ -14,11 +13,10 @@ export default function Page() {
     <>
       <Nav />
       <Hero />
-      <Stats />
       <Shop />
-      <Guide />
-      <Delivery />
-      <Social />
+      <Parts />
+      <Buy />
+      <Contact />
       <Footer />
       <ProductSheet />
       <CartDrawer />

@@ -1,172 +1,152 @@
-// Bilingual UI strings. His customers read Arabic; English is the second
-// language, not the first.
+/* Bilingual UI strings. The shop's customers read Arabic; English is the
+   second language, not the first. Every claim here is one the shop makes
+   itself on its own Instagram or Facebook page. */
 
 export const T = {
   nav: {
-    shop: { en: "Shop", ar: "المتجر" },
-    guide: { en: "Guide", ar: "الدليل" },
-    delivery: { en: "Delivery", ar: "التوصيل" },
+    builds: { en: "Builds", ar: "التجميعات" },
+    parts: { en: "Parts", ar: "القطع" },
+    buy: { en: "Buying", ar: "الشراء" },
     contact: { en: "Contact", ar: "تواصل" },
     cart: { en: "Cart", ar: "السلة" },
   },
   hero: {
-    tagline: { en: "We help you get the best sound.", ar: "نساعدك حتى تحصل افضل صوت" },
+    tagline: { en: "Stronger performance. Better experience.", ar: "أداء أقوى .. تجربة أفضل" },
     sub: {
-      en: "IEMs, dongle DACs and accessories. Baghdad — delivered to every governorate.",
-      ar: "سماعات، دنكل داك وملحقات. بغداد — توصيل لكافة المحافظات.",
+      en: "Ready gaming builds and computer parts. Baghdad — delivered to every governorate.",
+      ar: "تجميعات گيمنگ جاهزة وقطع كمبيوتر. بغداد — توصيل لكل المحافظات.",
     },
-    browse: { en: "Browse the shop", ar: "تصفح المتجر" },
+    browse: { en: "See the builds", ar: "شوف التجميعات" },
     ask: { en: "Ask on WhatsApp", ar: "اسأل على واتساب" },
-    brands: { en: "Brands we stock", ar: "الماركات المتوفرة" },
+    chain: { en: "Brands on the shelf", ar: "الماركات بالمعرض" },
   },
-  stats: {
-    products: { en: "Pieces in stock", ar: "قطعة بالمعرض" },
-    governorates: { en: "Governorates", ar: "محافظة نوصلها" },
-    brands: { en: "Brands stocked", ar: "ماركة بالرف" },
-  },
+
   shop: {
-    eyebrow: { en: "In stock", ar: "متوفر" },
-    title: { en: "The whole shelf.", ar: "كل الرف." },
+    eyebrow: { en: "Assembled and tested", ar: "مجمّعة ومفحوصة" },
+    title: { en: "Pick a build.", ar: "اختار تجميعة." },
     lede: {
-      en: "{n} pieces on the shelf, {lo} to {hi} dinars.",
-      ar: "{n} قطعة بالرف، من {lo} الى {hi} دينار.",
+      en: "{n} builds ready to go, {lo} to {hi} dinars. Every card below is the shop's own poster — same specs, same price.",
+      ar: "{n} تجميعة جاهزة، من {lo} الى {hi} دينار. كل بطاقة بالأسفل هي منشور المتجر نفسه — نفس المواصفات ونفس السعر.",
+    },
+    caveat: {
+      en: "Prices move with the market — confirm on WhatsApp before you order.",
+      ar: "الأسعار تتغير حسب السوق — ثبّت السعر على واتساب قبل ما تطلب.",
     },
     empty: { en: "Nothing here yet.", ar: "ماكو شي هنا." },
     more: { en: "Show all", ar: "عرض الكل" },
-    details: { en: "Details", ar: "التفاصيل" },
     add: { en: "Add to cart", ar: "ضيف للسلة" },
+    fresh: { en: "New", ar: "جديد" },
   },
+
   sheet: {
-    type: { en: "Type", ar: "النوع" },
-    pick: { en: "Version", ar: "النسخة" },
-    colors: { en: "Colours", ar: "الالوان" },
+    cpu: { en: "Processor", ar: "المعالج" },
+    gpu: { en: "Graphics card", ar: "كارت الشاشة" },
+    mb: { en: "Motherboard", ar: "المذربورد" },
+    ram: { en: "RAM", ar: "الرام" },
+    ssd: { en: "Storage", ar: "التخزين" },
+    psu: { en: "Power supply", ar: "الباور" },
+    cool: { en: "Cooling", ar: "التبريد" },
+    note: { en: "Also", ar: "إضافة" },
     warranty: { en: "Warranty", ar: "الضمان" },
-    chip: { en: "Chip", ar: "الشريحة" },
-    brand: { en: "Brand", ar: "الماركة" },
     delivery: { en: "Delivery", ar: "التوصيل" },
-    deliveryVal: { en: "All 18 governorates", ar: "كل محافظات العراق" },
-    pay: { en: "Payment", ar: "الدفع" },
-    payVal: { en: "On delivery, or Qi Card", ar: "عند الاستلام او كي كارد" },
+    deliveryVal: { en: "Baghdad and every governorate", ar: "بغداد وكل المحافظات" },
     close: { en: "Close", ar: "اغلاق" },
-    zoom: { en: "Open the full banner", ar: "افتح المنشور بالحجم الكامل" },
+    zoom: { en: "Open the full poster", ar: "افتح المنشور بالحجم الكامل" },
     remove: { en: "Remove from cart", ar: "شيل من السلة" },
+    post: { en: "See the original post", ar: "شوف المنشور الأصلي" },
   },
-  guide: {
-    eyebrow: { en: "Before you buy", ar: "قبل ما تشتري" },
-    title: { en: "Which one is for you.", ar: "أي وحدة تناسبك." },
+
+  parts: {
+    eyebrow: { en: "Also on the shelf", ar: "موجود بالمعرض" },
+    title: { en: "Parts, not just whole machines.", ar: "قطع، مو بس أجهزة كاملة." },
     lede: {
-      en: "The four questions behind almost every order.",
-      ar: "أربع أسئلة وراء تقريباً كل طلب.",
+      en: "Come with a build in mind and leave with the parts, or bring the machine you have and upgrade one piece. New and used. Part prices move with the market, so ask and you get today's number.",
+      ar: "تعال بفكرة تجميعة وخذ قطعها، أو جيب جهازك وطوّر قطعة وحدة. جديد ومستعمل. أسعار القطع تتغير حسب السوق، اسأل وتاخذ سعر اليوم.",
     },
-    items: [
-      {
-        q: { en: "What does the price get me?", ar: "شنو يفرق السعر؟" },
-        a: {
-          en: "Under 20,000 you are buying a dongle or tips. 30,000–50,000 is where a real IEM starts — Wan'er SG2, CHU II, Zero 2, Castor Pro. Above 90,000 you pay for driver count and shell work, not loudness.",
-          ar: "تحت ٢٠ الف تشتري دنكل أو سدادات. من ٣٠ الى ٥٠ الف تبدي السماعات الحقيقية — وانر SG2، تشو ٢، زيرو ٢، كاستر برو. فوق ٩٠ الف تدفع مقابل عدد المشغلات وجودة التصنيع، مو مقابل علو الصوت.",
-        },
-      },
-      {
-        q: { en: "3.5 mm or Type-C?", ar: "اواكس لو تايب سي؟" },
-        a: {
-          en: "No headphone jack on your phone — take the Type-C version where he stocks one: CHU II, Wan'er SG2, Phoenix, Old Fashioned. Otherwise buy the 3.5 mm and add a dongle later; the dongle outlives the earphone.",
-          ar: "إذا موبايلك ماكو بيه منفذ سماعة، خذ نسخة التايب سي إذا متوفرة — تشو ٢، وانر SG2، فينكس، اولد فاشند. غير هيچي خذ الاواكس وضيف دنكل بعدين؛ الدنكل يعيش أكثر من السماعة.",
-        },
-      },
-      {
-        q: { en: "Do I need a dongle?", ar: "أحتاج دنكل؟" },
-        a: {
-          en: "The JM12 at 12,000 is enough for most pairs on this page. Step up to the NK1 or JM6 Pro 2 if you listen loud or your pair is hard to drive.",
-          ar: "الـ JM12 بـ١٢ الف يكفي لأغلب السماعات بهاي الصفحة. اطلع لـ NK1 أو JM6 Pro 2 إذا تسمع بصوت عالي أو سماعتك صعبة التشغيل.",
-        },
-      },
-      {
-        q: { en: "Why buy tips separately?", ar: "ليش أشتري سدادات منفصلة؟" },
-        a: {
-          en: "A bad seal costs more bass than any upgrade buys back. The Sancai and He Sonic combos ship S, M and L in one case — the cheapest real improvement here.",
-          ar: "السدادة المو مناسبة تخسرك بيس أكثر مما أي ترقية تردّه. كومبو سانساي وهي سونك يجون S وM وL بعلبة وحدة — أرخص تحسين حقيقي بهاي الصفحة.",
-        },
-      },
+    ask: { en: "Ask about a part", ar: "اسأل عن قطعة" },
+    alsoLabel: { en: "And in the shop", ar: "وبالمتجر" },
+    also: [
+      { en: "Monitors", ar: "شاشات" },
+      { en: "Accessories", ar: "اكسسوارات" },
+      { en: "Used PlayStation 5", ar: "بلي 5 مستعمل" },
+      { en: "Used Xbox", ar: "اكس بوكس مستعمل" },
+      { en: "Used builds", ar: "تجميعات مستعملة" },
     ],
   },
-  delivery: {
-    eyebrow: { en: "Payment and delivery", ar: "الدفع والتوصيل" },
+
+  buy: {
+    eyebrow: { en: "Before you order", ar: "قبل ما تطلب" },
     title: { en: "How it reaches you.", ar: "شلون توصلك." },
-    lede: {
-      en: "How you pay, how it travels, and what the warranty covers.",
-      ar: "شلون تدفع، شلون توصل، وشنو يشمل الضمان.",
+    stats: {
+      builds: { en: "Builds on the shelf", ar: "تجميعة بالمعرض" },
+      warranty: { en: "Months of warranty", ar: "شهر ضمان" },
+      governorates: { en: "Governorates", ar: "محافظة نوصلها" },
     },
     items: [
-      {
-        icon: "wallet",
-        t: { en: "Cash on delivery", ar: "الدفع عند الاستلام" },
-        d: {
-          en: "Pay the courier once the box is in your hand.",
-          ar: "تدفع للمندوب لمن توصلك العلبة بإيدك.",
-        },
-      },
-      {
-        icon: "qi",
-        t: { en: "Rafidain Bank · Qi Card", ar: "مصرف الرافدين · كي كارد" },
-        d: {
-          en: "Transfer from a Qi Card. Ask on WhatsApp for the account.",
-          ar: "تحويل من كي كارد. اطلب رقم الحساب على واتساب.",
-        },
-      },
-      {
-        icon: "map",
-        t: { en: "Every governorate", ar: "كل المحافظات" },
-        d: {
-          en: "Baghdad and the other seventeen. The courier's fee is separate.",
-          ar: "بغداد وباقي المحافظات. اجرة المندوب منفصلة.",
-        },
-      },
       {
         icon: "shield",
-        t: { en: "Warranty", ar: "الضمان" },
+        t: { en: "A full year of warranty", ar: "ضمان سنة كاملة" },
         d: {
-          en: "Two months to a year, printed on each item. Manufacturing faults only.",
-          ar: "من شهرين الى سنة، مكتوبة على كل منتج. خلل مصنعي فقط.",
+          en: "Real warranty on every build, for a full year.",
+          ar: "ضمان حقيقي على كل تجميعة، لمدة سنة كاملة.",
+        },
+      },
+      {
+        icon: "check",
+        t: { en: "Inspect it first", ar: "افحص قبل ما تستلم" },
+        d: {
+          en: "Check the whole machine with the courier, part by part, before you take it.",
+          ar: "افحص الجهاز كامل مع المندوب، قطعة قطعة، قبل ما تستلمه.",
+        },
+      },
+      {
+        icon: "truck",
+        t: { en: "To your door", ar: "لحد باب بيتك" },
+        d: {
+          en: "Inside Baghdad and out to every governorate.",
+          ar: "داخل بغداد ولكل المحافظات.",
+        },
+      },
+      {
+        icon: "store",
+        t: { en: "Two branches", ar: "فرعين ببغداد" },
+        d: {
+          en: "Karrada and Al-Saydia. Come and see the machine yourself.",
+          ar: "الكرادة والسيدية. تعال شوف الجهاز بعينك.",
         },
       },
     ],
   },
+
   cta: {
-    title: { en: "Not sure? Just ask.", ar: "محتار؟ بس اسأل." },
+    title: { en: "Not sure which one?", ar: "محتار على أي وحدة؟" },
     lede: {
-      en: "Three questions, about twenty seconds, and you get three picks with the reason for each.",
-      ar: "ثلاث أسئلة، حوالي عشرين ثانية، وتطلعلك ثلاث خيارات وسبب كل واحد.",
+      en: "Three questions, about twenty seconds, and you get three builds with the reason for each.",
+      ar: "ثلاث أسئلة، حوالي عشرين ثانية، وتطلعلك ثلاث تجميعات وسبب كل وحدة.",
     },
   },
 
   social: {
     eyebrow: { en: "Accounts", ar: "الحسابات" },
-    title: { en: "Follow the shop.", ar: "تابع المحل." },
+    title: { en: "Talk to the shop.", ar: "احچي ويا المتجر." },
     lede: {
-      en: "The same shop on all three. Instagram carries the posts, WhatsApp gets the fastest reply.",
-      ar: "نفس المحل بالثلاثة. انستغرام بيه المنشورات، وواتساب أسرع رد.",
+      en: "Same shop on all of them. WhatsApp gets the fastest reply.",
+      ar: "نفس المتجر بالكل. واتساب أسرع رد.",
     },
+    branches: { en: "Branches", ar: "الفروع" },
     items: [
-      {
-        key: "instagram",
-        handle: "@3lawy.store",
-      },
-      {
-        key: "whatsapp",
-        handle: "07885903332",
-      },
-      {
-        key: "telegram",
-        handle: "@alawytech",
-      },
+      { key: "whatsapp", label: { en: "WhatsApp", ar: "واتساب" } },
+      { key: "instagram", label: { en: "Instagram", ar: "انستغرام" } },
+      { key: "facebook", label: { en: "Facebook", ar: "فيسبوك" } },
+      { key: "phone", label: { en: "Phone", ar: "اتصال" } },
     ],
   },
 
   pick: {
     title: { en: "Confused?", ar: "محتار؟" },
     lede: {
-      en: "Three questions, about twenty seconds. Then three picks with the reason for each.",
-      ar: "ثلاث أسئلة، حوالي عشرين ثانية. وبعدها ثلاث خيارات وسبب كل واحد.",
+      en: "Three questions, about twenty seconds. Then three builds with the reason for each.",
+      ar: "ثلاث أسئلة، حوالي عشرين ثانية. وبعدها ثلاث تجميعات وسبب كل وحدة.",
     },
     cta: { en: "Help me pick", ar: "ساعدني اختار" },
     of: { en: "of", ar: "من" },
@@ -179,58 +159,56 @@ export const T = {
       ar: "مرتبة على جوابك وعلى المكتوب بكل منشور. ولا شي غيره.",
     },
     none: {
-      en: "Nothing on the shelf fits that. Raise the budget, or just message him.",
-      ar: "ماكو شي بالرف يطابق هذا. زيّد الميزانية، أو بس دزله رسالة.",
+      en: "Nothing on the shelf fits that. Raise the budget, or just message the shop.",
+      ar: "ماكو شي بالمعرض يطابق هذا. زيّد الميزانية، أو بس دزلهم رسالة.",
     },
-    addon: { en: "Worth adding", ar: "يستاهل تضيفه" },
     questions: [
       {
         key: "use",
         multi: true,
-        q: { en: "What will you use it for?", ar: "بشنو راح تستعملها؟" },
+        q: { en: "What will you use it for?", ar: "بشنو راح تستعمله؟" },
         hint: { en: "Pick as many as you like.", ar: "اختار شكد ما تريد." },
         options: [
-          { v: "music", en: "Music", ar: "موسيقى" },
           { v: "game", en: "Games", ar: "العاب" },
-          { v: "call", en: "Calls", ar: "مكالمات" },
-          { v: "daily", en: "The road and everyday", ar: "الطريق والدوام" },
+          { v: "edit", en: "Editing and design", ar: "مونتاج وتصميم" },
+          { v: "stream", en: "Streaming", ar: "بث وستريم" },
+          { v: "work", en: "Study and office", ar: "دراسة ودوام" },
         ],
       },
       {
         key: "budget",
         q: { en: "How much, at most?", ar: "شكد تريد تدفع، بالأكثر؟" },
         options: [
-          { v: 40000, en: "Up to 40,000", ar: "لحد ٤٠ الف" },
-          { v: 80000, en: "Up to 80,000", ar: "لحد ٨٠ الف" },
-          { v: 160000, en: "Up to 160,000", ar: "لحد ١٦٠ الف" },
-          { v: 999999, en: "No limit", ar: "ماكو حد" },
+          { v: 1400000, en: "Up to 1,400,000", ar: "لحد مليون و٤٠٠" },
+          { v: 1800000, en: "Up to 1,800,000", ar: "لحد مليون و٨٠٠" },
+          { v: 2150000, en: "Up to 2,150,000", ar: "لحد مليونين و١٥٠" },
+          { v: 99000000, en: "No limit", ar: "ماكو حد" },
         ],
       },
       {
-        key: "port",
-        q: { en: "What are you plugging into?", ar: "بشنو راح توصلها؟" },
+        key: "res",
+        q: { en: "What screen do you play on?", ar: "على أي شاشة تلعب؟" },
         options: [
-          { v: "jack", en: "It has a 3.5 mm jack", ar: "بيه منفذ سماعة ٣.٥" },
-          { v: "typec", en: "Type-C only", ar: "تايب سي بس" },
+          { v: "1080", en: "1080p", ar: "1080p" },
+          { v: "1440", en: "1440p", ar: "1440p" },
+          { v: "4k", en: "4K and above", ar: "4K وفوك" },
           { v: "unsure", en: "Not sure", ar: "ما أدري" },
         ],
       },
     ],
     reasons: {
-      typec: { en: "Type-C version in stock", ar: "نسخة تايب سي متوفرة" },
-      jack: { en: "3.5 mm version in stock", ar: "نسخة اواكس متوفرة" },
-      both: { en: "3.5 mm and Type-C", ar: "اواكس وتايب سي" },
-      mic: { en: "Comes with a mic", ar: "تجي بمايك" },
-      nocable: { en: "No cable at all", ar: "بدون سلك أبداً" },
-      wired: { en: "Wired, so no Bluetooth delay", ar: "سلكية، ماكو تأخير بلوتوث" },
-      dongle: { en: "Wants a dongle on a Type-C phone", ar: "تريد دنكل ويا موبايل تايب سي" },
-      warranty1y: { en: "A year of warranty", ar: "ضمان سنة" },
-      warranty6m: { en: "Six months of warranty", ar: "ضمان ستة اشهر" },
-      topOfBudget: { en: "The most of the three", ar: "أقوى الثلاثة" },
+      vram16: { en: "16GB of video memory", ar: "١٦ گيگا فرام بالكارت" },
+      ram32: { en: "32GB of RAM", ar: "٣٢ گيگا رام" },
+      ddr5: { en: "DDR5 memory", ar: "رام DDR5" },
+      tb: { en: "1TB of storage", ar: "تخزين ١ تيرا" },
+      aio: { en: "360mm liquid cooling", ar: "تبريد مائي ٣٦٠" },
+      top: { en: "The strongest inside your budget", ar: "الأقوى ضمن ميزانيتك" },
       value: { en: "The cheapest of the three", ar: "أرخص الثلاثة" },
+      fresh: { en: "Posted this week", ar: "منشورة هذا الأسبوع" },
       inbudget: { en: "Inside your budget", ar: "ضمن ميزانيتك" },
     },
   },
+
   cart: {
     title: { en: "Your cart", ar: "سلتك" },
     empty: { en: "Your cart is empty", ar: "سلتك فارغة" },
@@ -245,23 +223,14 @@ export const T = {
     go: { en: "Checkout", ar: "اتمام الطلب" },
     items: { en: "in your cart", ar: "بسلتك" },
   },
+
   footer: {
     shop: { en: "Shop", ar: "المتجر" },
     help: { en: "Help", ar: "مساعدة" },
     contact: { en: "Contact", ar: "تواصل" },
-    rights: { en: "Alawy Audiolab · Baghdad", ar: "علاوي اوديو لاب · بغداد" },
+    rights: { en: "Eagle Store · Baghdad", ar: "النسر ستور · بغداد" },
     prices: { en: "Prices in Iraqi dinar", ar: "الأسعار بالدينار العراقي" },
   },
-};
-
-// The plain name for what the thing is. That is all a category can honestly
-// tell you about a specific product.
-export const CAT_TYPE = {
-  iem: { en: "In-ear monitor", ar: "سماعة داخل الأذن" },
-  dac: { en: "Dongle DAC and amp", ar: "دنكل داك ومضخم" },
-  tws: { en: "True wireless", ar: "لاسلكي بالكامل" },
-  hp: { en: "Headphone", ar: "سماعة رأس" },
-  acc: { en: "Accessory", ar: "ملحق" },
 };
 
 export const t = (node, lang) => (node && node[lang]) || (node && node.en) || "";

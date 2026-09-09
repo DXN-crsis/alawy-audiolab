@@ -1,116 +1,90 @@
-import { PRODUCTS, bySlug } from "@/data/products";
+import { PRODUCTS } from "@/data/products";
 
-// Only things you wear. Dongles and tips are suggested as an add-on, never
-// ranked as an answer to "which earphones".
-const WEARABLE = ["iem", "tws", "hp"];
+// "no limit" has to mean something, so it means the dearest build on the
+// shelf. Read from the catalogue so it follows whatever is added next.
+const CEILING = Math.max(...PRODUCTS.map((p) => p.price));
 
-// "no limit" has to mean something to divide by, so it means the dearest thing
-// on the shelf. Read from the catalogue so it follows whatever he adds next.
-const CEILING = Math.max(...PRODUCTS.filter((p) => WEARABLE.includes(p.cat)).map((p) => p.price));
-
-/** What his own variant labels say about a product. Silence is not a "no": a
- *  product he never labelled scores neutral and claims nothing either way. */
+/** Only what the shop printed on the build's own post. A field they never
+ *  wrote down scores nothing — it is never guessed at. */
 export function shape(p) {
-  const vs = p.variants ?? [];
-  const any = (re, not) =>
-    vs.some((v) => {
-      const s = v.en.toLowerCase();
-      return re.test(s) && !(not && not.test(s));
-    });
-
-  const typeC = any(/type-c/);
-  const jack = any(/3\.5/);
+  // "16GB DDR5 6200" / "32GB" / "16GB RGB"
+  const ram = parseInt(p.ram, 10) || 0;
+  // video memory is only on the cards where they wrote it: "RX 9060 XT 16GB"
+  const vram = Number((/(\d+)\s*GB/i.exec(p.name) || [])[1]) || 0;
   return {
-    typeC,
-    jack,
-    typeCOnly: typeC && !jack,
-    mic: any(/\bmic\b/, /no mic/),
-    months: warrantyMonths(p.warranty),
+    ram,
+    vram,
+    ddr5: /ddr5/i.test(p.ram),
+    tb: /1\s*TB/i.test(p.ssd),
+    aio: !!p.cool,
+    fresh: !!p.fresh,
   };
 }
 
-function warrantyMonths(w) {
-  const m = /(\d+)\s*(month|year)/.exec(w?.en ?? "");
-  if (!m) return 0;
-  return m[2] === "year" ? Number(m[1]) * 12 : Number(m[1]);
-}
-
 /**
- * Ranks the shelf against three answers and returns the top three, each with
- * the reasons it placed. Every reason is a fact off his banner or a property
- * of the connector itself — nothing here is a claim about how a pair sounds,
- * because that is not something this catalogue knows.
+ * Ranks the shelf against three answers and returns the top three with the
+ * reasons each one placed. Every reason is a number printed on that build's
+ * own post — nothing here claims a frame rate, because the catalogue does not
+ * know one.
  */
-export function recommend({ use, budget, port }) {
-  const ranked = PRODUCTS.filter((p) => WEARABLE.includes(p.cat) && p.price <= budget)
+export function recommend({ use, budget = CEILING, res }) {
+  const uses = Array.isArray(use) ? use : use ? [use] : [];
+  const wants = (u) => uses.includes(u);
+  // Video memory, liquid cooling and a fast card are worth paying for when
+  // something is actually going to load them. For study and office they are
+  // not a reason to spend more, so they stop counting.
+  const heavy = wants("game") || wants("edit") || wants("stream");
+
+  const fits = PRODUCTS.filter((p) => p.price <= Math.min(budget, CEILING));
+  // Where a build sits between the cheapest and the dearest that fit — not
+  // price over the ceiling, which collapses to nothing the moment one 3.9m
+  // machine joins the shelf and leaves the spec bonuses deciding everything.
+  const lo = Math.min(...fits.map((p) => p.price));
+  const spread = Math.max(...fits.map((p) => p.price)) - lo || 1;
+
+  const ranked = fits
     .map((p) => {
       const f = shape(p);
       const why = [];
       let score = 0;
 
-      // what it has to plug into
-      if (port === "typec") {
-        if (p.cat === "tws") {
-          score += 40;
-          why.push("nocable");
-        } else if (f.typeC) {
-          score += 45;
-          why.push("typec");
-        } else {
-          score -= 12;
-          why.push("dongle");
-        }
-      } else if (port === "jack") {
-        if (f.typeCOnly) score -= 45; // simply will not go in
-        else if (f.jack) {
-          score += 10;
-          why.push("jack");
-        }
-      } else if (f.typeC && f.jack) {
-        score += 18;
-        why.push("both");
-      }
+      // How far up that range the build sits. A bigger screen is the one
+      // reason to want the top of it rather than change back.
+      const util = (p.price - lo) / spread;
+      const pull = res === "4k" ? 62 : res === "1440" ? 44 : res === "1080" ? 18 : 34;
+      score += Math.round(util * pull);
 
-      // What it is for. Several answers are allowed and they are meant to pull
-      // against each other — nothing is both cable-free and delay-free, so
-      // picking games and everyday together lets games win, which is correct.
-      const uses = Array.isArray(use) ? use : [use];
-      const wants = (u) => uses.includes(u);
+      // Study and office is the one answer that does not want the dearest box
+      // in the shop, so it pulls the other way hard enough to beat the spec
+      // bonuses below — unless something heavier is picked alongside it.
+      if (wants("work") && !heavy) score -= Math.round(util * 95);
 
-      if (wants("game") || wants("call")) {
-        if (f.mic) {
-          score += 40;
-          why.push("mic");
-        } else score -= 10;
+      if (f.vram >= 16 && heavy) {
+        score += 16;
+        why.push("vram16");
       }
-      if (wants("game")) {
-        if (p.cat === "tws") score -= 45; // bluetooth adds delay, always
-        else {
-          score += 12;
-          why.push("wired");
-        }
+      if (f.ram >= 32) {
+        // Editing and streaming are the two answers that are held back by
+        // memory before anything else, so there it outweighs the card.
+        score += wants("edit") || wants("stream") ? 34 : 8;
+        why.push("ram32");
       }
-      if (wants("music")) {
-        if (p.cat === "iem") score += 14;
-        else if (p.cat === "tws") score -= 6;
+      if (f.ddr5) {
+        score += 6;
+        why.push("ddr5");
       }
-      if (wants("daily") && p.cat === "tws") {
-        score += 34;
-        why.push("nocable");
-      }
-
-      // the warranty he prints on the post is a real difference between two pairs
-      if (f.months >= 12) {
-        score += 14;
-        why.push("warranty1y");
-      } else if (f.months >= 6) {
+      if (f.tb) {
         score += 7;
-        why.push("warranty6m");
-      } else score += f.months;
-
-      // how much of the budget they set it actually uses — weighted heavily
-      // enough that someone who says "no limit" is not handed the cheapest pair
-      score += Math.round((p.price / Math.min(budget, CEILING)) * 55);
+        why.push("tb");
+      }
+      if (f.aio && heavy) {
+        score += 6;
+        why.push("aio");
+      }
+      if (f.fresh) {
+        score += 4;
+        why.push("fresh");
+      }
 
       // a card with no reasons on it looks broken, and "it is inside the
       // number you gave us" is still a true thing to say
@@ -121,55 +95,49 @@ export function recommend({ use, budget, port }) {
     .sort((a, b) => b.score - a.score || a.product.price - b.product.price)
     .slice(0, 3);
 
+  // Only claimed when it is actually true of the three on screen.
   if (ranked.length > 1) {
-    const dearest = ranked.reduce((a, b) => (b.product.price > a.product.price ? b : a));
     const cheapest = ranked.reduce((a, b) => (b.product.price < a.product.price ? b : a));
-    dearest.why.push("topOfBudget");
     cheapest.why.push("value");
   }
   return ranked;
 }
 
-/** One thing worth adding to the box, or nothing. */
-export function addon(answers, ranked) {
-  if (answers.port === "typec" && ranked.some((r) => r.why.includes("dongle"))) {
-    return bySlug("jcally-jm12");
-  }
-  if (ranked.some((r) => r.product.cat === "iem")) return bySlug("tangzu-he-sonic-combo");
-  return null;
-}
-
-/** node src/lib/recommend.js — fails loudly if the ranking stops making sense. */
+/** node --experimental-strip-types … or just call demo() — fails loudly if
+ *  the ranking stops making sense. */
 export function demo() {
-  const game = recommend({ use: ["game"], budget: 80000, port: "typec" });
-  console.assert(game.length === 3, "returns three");
-  console.assert(game.every((r) => r.product.price <= 80000), "budget is a hard ceiling");
-  console.assert(game[0].product.cat !== "tws", "never bluetooth for gaming");
-  console.assert(shape(game[0].product).mic, "gaming pick has a mic");
+  const all = recommend({ use: ["game"], budget: 99000000, res: "4k" });
+  console.assert(all.length === 3, "returns three");
 
-  const daily = recommend({ use: ["daily"], budget: 999999, port: "typec" });
-  console.assert(daily[0].product.cat === "tws", "wireless wins for everyday on a Type-C phone");
+  const tight = recommend({ use: ["game"], budget: 1400000, res: "1080" });
+  console.assert(tight.length === 3, "the lowest budget tier still fills three cards");
+  console.assert(tight.every((r) => r.product.price <= 1400000), "budget is a hard ceiling");
 
-  const music = recommend({ use: ["music"], budget: 40000, port: "jack" });
-  console.assert(music.every((r) => !shape(r.product).typeCOnly), "no Type-C-only pair for a 3.5 mm jack");
-  console.assert(music.every((r) => r.product.price <= 40000), "cheap budget respected");
+  const none = recommend({ use: ["game"], budget: 500000, res: "1080" });
+  console.assert(none.length === 0, "nothing under 500,000 — empty, not a guess");
 
-  const tiny = recommend({ use: ["music"], budget: 5000, port: "jack" });
-  console.assert(tiny.length === 0, "nothing under 5,000 — must return empty, not a guess");
+  // a 4K answer should not land on the cheapest thing that fits
+  const cheapest = Math.min(...PRODUCTS.map((p) => p.price));
+  const four = recommend({ use: ["game"], budget: 99000000, res: "4k" });
+  console.assert(four[0].product.price > cheapest, "4K does not pick the cheapest build");
 
-  // more than one answer at a time
-  const calls = recommend({ use: ["call"], budget: 80000, port: "unsure" });
-  console.assert(shape(calls[0].product).mic, "a calls pick has a mic");
-
-  const mixed = recommend({ use: ["music", "daily"], budget: 999999, port: "typec" });
-  console.assert(mixed.some((r) => r.product.cat === "tws"), "wireless shows up once everyday is picked");
-
-  const both = recommend({ use: ["game", "daily"], budget: 80000, port: "typec" });
-  console.assert(both[0].product.cat !== "tws", "games still rule out bluetooth alongside everyday");
+  // …and an office answer should lean the other way at the same budget
+  const office = recommend({ use: ["work"], budget: 99000000, res: "1080" });
   console.assert(
-    new Set(both[0].why).size === both[0].why.length,
-    "no reason is listed twice"
+    office[0].product.price === cheapest,
+    "office lands on the cheapest build on the shelf"
   );
+
+  const edit = recommend({ use: ["edit"], budget: 2150000, res: "1440" });
+  console.assert(shape(edit[0].product).ram >= 32, "editing pick has 32GB");
+
+  for (const r of all) {
+    console.assert(new Set(r.why).size === r.why.length, "no reason is listed twice");
+    console.assert(r.why.length > 0, "every card carries at least one reason");
+  }
+
+  const three = recommend({ use: ["game"], budget: 2150000, res: "1440" });
+  console.assert(three.some((r) => r.why.includes("value")), "the cheapest of the three is labelled");
 
   return "recommend ok";
 }

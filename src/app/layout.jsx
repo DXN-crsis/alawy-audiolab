@@ -5,8 +5,8 @@ import "./globals.css";
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
 const kufi = Noto_Kufi_Arabic({ subsets: ["arabic"], variable: "--font-kufi", display: "swap" });
-// The wordmark only. Closest available match to the squared, near-solid
-// letterforms of his logo; five glyphs, so the cost is a rounding error.
+// The wordmark only. A squared, near-solid face to sit beside the shop's
+// angular ES shield; five glyphs, so the cost is a rounding error.
 const mark = Rubik_Mono_One({
   subsets: ["latin"],
   weight: "400",
@@ -21,13 +21,15 @@ const mark = Rubik_Mono_One({
   adjustFontFallback: true,
 });
 
+const DESC =
+  "تجميعات گيمنگ جاهزة وقطع كمبيوتر، جديد ومستعمل. ضمان سنة كاملة، توصيل لكل المحافظات. بغداد — الكرادة والسيدية.";
+
 export const metadata = {
-  title: "ALAWY audiolab",
-  description:
-    "متجر سماعات احترافية — نساعدك حتى تحصل افضل صوت. توصيل لكافة محافظات العراق، الدفع عند الاستلام او مصرف الرافدين.",
+  title: "النسر ستور | Eagle Store",
+  description: DESC,
   openGraph: {
-    title: "ALAWY audiolab",
-    description: "سماعات احترافية، دنكل داك وملحقات. بغداد — توصيل لكافة المحافظات.",
+    title: "النسر ستور | Eagle Store",
+    description: DESC,
     type: "website",
   },
 };
@@ -46,7 +48,7 @@ const BOOT = `(function(){try{
 var d=document.documentElement,n=navigator,l;
 // only ever written when someone taps the language toggle, so an automatic
 // guess never freezes itself in place
-try{l=localStorage.getItem('alawy-lang-choice')}catch(e){}
+try{l=localStorage.getItem('eagle-lang-choice')}catch(e){}
 if(l!=='en'&&l!=='ar'){
  var ARAB=/^(IQ|SA|AE|KW|QA|BH|OM|YE|JO|LB|SY|PS|EG|SD|LY|TN|DZ|MA|MR|SO|DJ|KM)$/;
  var tags=(n.languages&&n.languages.length)?n.languages:[n.language||''];

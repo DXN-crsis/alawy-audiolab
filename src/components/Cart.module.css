@@ -60,8 +60,8 @@
   gap: var(--s3);
 }
 .line { display: flex; gap: 13px; align-items: center; }
-/* thumbnail and name open the product; the stepper beside it stays its own
-   control, so tapping + never opens anything */
+/* the name opens the build; the stepper beside it stays its own control, so
+   tapping + never opens anything */
 .lineOpen {
   flex: 1;
   min-width: 0;
@@ -79,12 +79,10 @@
 }
 .lineOpen:hover { opacity: 0.72; }
 .lineOpen:active { opacity: 0.55; }
-.thumb { width: 50px; height: 62px; border-radius: var(--r-md); flex: none; overflow: hidden; background: var(--card); }
-.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .info { flex: 1; min-width: 0; }
-.info b { display: block; font-size: 14.5px; font-weight: 500; letter-spacing: -0.01em; }
+.info b { display: block; font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
 .info span { font-family: var(--mono); font-size: 12px; color: var(--fg-50); font-variant-numeric: tabular-nums; }
-.info em { display: block; font-style: normal; font-size: 11.5px; color: var(--fg-30); }
+.info em { display: block; font-style: normal; font-family: var(--mono); font-size: 11px; color: var(--fg-30); margin: 2px 0 3px; }
 
 .qty {
   display: flex;
@@ -167,8 +165,11 @@
 .barBtn:hover { background: rgba(26, 26, 26, 0.95); border-color: rgba(255, 255, 255, 0.22); }
 html[data-lite] .barBtn { background: #111; }
 
-.barThumb { width: 30px; height: 37px; border-radius: 8px; overflow: hidden; background: var(--card); flex: none; }
-.barThumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* the shop's own mark, not a product photo — a build has no single picture */
+.barThumb {
+  width: 32px; height: 32px; border-radius: 999px; flex: none;
+  display: grid; place-items: center; background: var(--surface-2);
+}
 
 /* the label swaps in place, so the row must not resize under it */
 .barText { display: grid; text-align: start; line-height: 1.3; min-width: 0; }

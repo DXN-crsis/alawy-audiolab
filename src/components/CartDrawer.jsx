@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import Image from "next/image";
 import { m, AnimatePresence } from "motion/react";
+import { Mark } from "./Logo";
 import { useStore } from "@/lib/store";
 import { money } from "@/data/products";
 import { T, t } from "@/data/copy";
@@ -13,9 +13,6 @@ const EASE = [0.22, 1, 0.36, 1];
 export default function CartDrawer() {
   const { lang, lines, total, count, bump, open, setOpen, peek, setPeek, toast, checkoutUrl } = useStore();
   const rtl = lang === "ar";
-
-  // the thing just added, else the first line in the cart
-  const shownSlug = toast?.slug ?? lines[0]?.product.slug;
 
   // reserve room at the bottom of the page so the bar never sits on the footer
   useEffect(() => {
@@ -90,16 +87,11 @@ export default function CartDrawer() {
                           className={s.lineOpen}
                           type="button"
                           onClick={() => setPeek(l.product)}
-                          aria-label={`${l.product.brand} ${l.product.name} — ${t(T.shop.details, lang)}`}
+                          aria-label={`${l.product.name} — ${l.product.cpu}`}
                         >
-                          <span className={s.thumb}>
-                            <Image src={`/products/${l.product.slug}.jpg`} alt="" width={120} height={150} sizes="60px" />
-                          </span>
                           <span className={s.info}>
-                            <b>
-                              {l.product.brand} {l.product.name}
-                            </b>
-                            {l.variant && <em>{t(l.variant, lang)}</em>}
+                            <b dir="ltr">{l.product.name}</b>
+                            <em dir="ltr">{l.product.cpu}</em>
                             <span dir="ltr">{money(l.unit)} IQD</span>
                           </span>
                         </button>
@@ -159,7 +151,7 @@ export default function CartDrawer() {
           >
             <button className={s.barBtn} type="button" onClick={() => setOpen(true)}>
               <span className={s.barThumb}>
-                <Image src={`/products/${shownSlug}.jpg`} alt="" width={80} height={100} sizes="34px" />
+                <Mark size={19} />
               </span>
 
               <span className={s.barText}>

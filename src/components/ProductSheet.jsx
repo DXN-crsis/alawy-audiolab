@@ -6,7 +6,7 @@ import Shot from "./Shot";
 import { m, AnimatePresence } from "motion/react";
 import { useStore, cartKey } from "@/lib/store";
 import { money, SHOP } from "@/data/products";
-import { T, t, CAT_TYPE } from "@/data/copy";
+import { T, t } from "@/data/copy";
 import s from "./Sheet.module.css";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -23,14 +23,11 @@ export default function ProductSheet() {
 
 function Sheet({ p, lang, close }) {
   const { add, drop, lines } = useStore();
-  const [vi, setVi] = useState(0);
   const [zoom, setZoom] = useState(false);
-  const variant = p.variants?.[vi];
-  const price = variant?.price ?? p.price;
 
   // Offering "add to cart" for something already in the cart reads as a
   // mistake, most obviously when the sheet was opened from the cart itself.
-  const key = cartKey(p.slug, vi);
+  const key = cartKey(p.slug);
   const inCart = lines.some((l) => l.key === key);
 
   useEffect(() => {
@@ -46,23 +43,25 @@ function Sheet({ p, lang, close }) {
 
   const ask = `https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(
     lang === "ar"
-      ? `سلام، اريد اسأل عن ${p.brand} ${p.name}`
-      : `Hi — a question about the ${p.brand} ${p.name}`
+      ? `سلام، اريد اسأل عن تجميعة ${p.name} — ${p.cpu}`
+      : `Hi — a question about the ${p.name} build with the ${p.cpu}`
   )}`;
 
-  // Only what is actually known: his transcribed fields, plus the two terms
-  // that hold for every order in the shop.
+  // Only what the shop itself printed on the post this build came from.
   const facts = [
-    [T.sheet.brand, { en: p.brand, ar: p.brand }],
-    [T.sheet.type, CAT_TYPE[p.cat]],
-    // only as a row when there is no picker above to say it already
-    p.variants?.length === 1 && [T.sheet.pick, p.variants[0]],
-    p.colors && [T.sheet.colors, p.colors],
-    p.warranty && [T.sheet.warranty, p.warranty],
-    p.note && [T.sheet.chip, p.note],
-    [T.sheet.delivery, T.sheet.deliveryVal],
-    [T.sheet.pay, T.sheet.payVal],
+    [T.sheet.gpu, p.name],
+    [T.sheet.cpu, p.cpu],
+    [T.sheet.mb, p.mb],
+    [T.sheet.ram, p.ram],
+    [T.sheet.ssd, p.ssd],
+    [T.sheet.psu, p.psu],
+    p.cool && [T.sheet.cool, t(p.cool, lang)],
+    p.note && [T.sheet.note, t(p.note, lang)],
+    p.warranty && [T.sheet.warranty, t(p.warranty, lang)],
+    [T.sheet.delivery, t(T.sheet.deliveryVal, lang)],
   ].filter(Boolean);
+
+  const src = `/builds/${p.slug}.jpg`;
 
   return (
     <>
@@ -78,7 +77,7 @@ function Sheet({ p, lang, close }) {
         className={s.wrap}
         role="dialog"
         aria-modal="true"
-        aria-label={`${p.brand} ${p.name}`}
+        aria-label={`${p.name} — ${p.cpu}`}
         initial={{ opacity: 0, y: 26, scale: 0.985 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 18, scale: 0.99 }}
@@ -91,56 +90,56 @@ function Sheet({ p, lang, close }) {
         </button>
 
         <button
-          className={s.shot}
-          type="button"
-          onClick={() => setZoom(true)}
-          aria-label={t(T.sheet.zoom, lang)}
-        >
-          <Shot
-            src={`/products/${p.slug}.jpg`}
-            alt={`${p.brand} ${p.name}`}
-            width={1080}
-            height={1350}
-            quality={90}
-            sizes="(max-width: 880px) 100vw, 460px"
-            priority
-          />
-          <span className={s.expand} aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none">
-              <path d="M9 4H4v5M15 4h5v5M15 20h5v-5M9 20H4v-5" stroke="currentColor"
-                    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
+            className={s.shot}
+            type="button"
+            onClick={() => setZoom(true)}
+            aria-label={t(T.sheet.zoom, lang)}
+          >
+            <Shot
+              src={src}
+              alt={`${p.name} — ${p.cpu}`}
+              width={1000}
+              height={1250}
+              quality={86}
+              sizes="(max-width: 880px) 100vw, 420px"
+              priority
+            />
+            <span className={s.expand} aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none">
+                <path d="M9 4H4v5M15 4h5v5M15 20h5v-5M9 20H4v-5" stroke="currentColor"
+                      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
         </button>
 
         <div className={s.side}>
           <div className={s.scroll}>
             <h3 className={s.name}>{p.name}</h3>
-
-            {p.variants?.length > 1 && (
-              <div className={s.picker}>
-                {p.variants.map((v, i) => (
-                  <button key={i} type="button" data-on={i === vi} onClick={() => setVi(i)}>
-                    {t(v, lang)}
-                    <em dir="ltr">{money(v.price)}</em>
-                  </button>
-                ))}
-              </div>
-            )}
+            <p className={s.sub}>{p.cpu}</p>
 
             <dl className={s.facts}>
               {facts.map(([k, v], i) => (
                 <div key={i}>
                   <dt>{t(k, lang)}</dt>
-                  <dd>{t(v, lang)}</dd>
+                  <dd dir="auto">{v}</dd>
                 </div>
               ))}
             </dl>
+
+            {p.post && (
+              <a className={s.post} href={p.post} target="_blank" rel="noopener">
+                {t(T.sheet.post, lang)}
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" aria-hidden="true">
+                  <path d="M14 4h6v6M20 4l-8.5 8.5" stroke="currentColor" strokeWidth="1.9"
+                        strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            )}
           </div>
 
           <div className={s.foot}>
             <span className={s.price} dir="ltr">
-              {money(price)} <small>IQD</small>
+              {money(p.price)} <small>IQD</small>
             </span>
             <div className={s.buttons}>
               <button
@@ -151,7 +150,7 @@ function Sheet({ p, lang, close }) {
                     drop(key); // stay open, so you can see it go and put it back
                     return;
                   }
-                  add(p.slug, vi, `${p.brand} ${p.name}`);
+                  add(p.slug, 0, p.name);
                   close();
                 }}
               >
@@ -170,7 +169,7 @@ function Sheet({ p, lang, close }) {
           className={s.zoom}
           role="dialog"
           aria-modal="true"
-          aria-label={`${p.brand} ${p.name}`}
+          aria-label={p.name}
           onClick={() => setZoom(false)}
         >
           <button className={s.zoomClose} type="button" aria-label={t(T.sheet.close, lang)}>
@@ -179,12 +178,12 @@ function Sheet({ p, lang, close }) {
             </svg>
           </button>
           <Image
-            src={`/products/${p.slug}.jpg`}
-            alt={`${p.brand} ${p.name}`}
-            width={1080}
-            height={1350}
+            src={src}
+            alt={`${p.name} — ${p.cpu}`}
+            width={1000}
+            height={1250}
             quality={92}
-            sizes="(max-width: 900px) 94vw, 780px"
+            sizes="(max-width: 900px) 94vw, 700px"
             priority
           />
         </div>
