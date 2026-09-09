@@ -114,8 +114,8 @@ function Sheet({ p, lang, close }) {
 
         <div className={s.side}>
           <div className={s.scroll}>
-            <h3 className={s.name}>{p.name}</h3>
-            <p className={s.sub}>{p.cpu}</p>
+            <h3 className={s.name}><bdi>{p.name}</bdi></h3>
+            <p className={s.sub}><bdi>{p.cpu}</bdi></p>
 
             <dl className={s.facts}>
               {facts.map(([k, v], i) => (

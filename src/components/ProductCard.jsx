@@ -36,8 +36,8 @@ export default function ProductCard({ product: p, index }) {
       </div>
 
       <div className={s.body}>
-        <h3 className={s.name}>{p.name}</h3>
-        <p className={s.cpu}>{p.cpu}</p>
+        <h3 className={s.name}><bdi>{p.name}</bdi></h3>
+        <p className={s.cpu}><bdi>{p.cpu}</bdi></p>
 
         <div className={s.foot}>
           <span className={s.price} dir="ltr">

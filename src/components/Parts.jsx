@@ -1,11 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import Shot from "./Shot";
 import Reveal from "./Reveal";
 import { useStore } from "@/lib/store";
-import { PART_GROUPS, partOptions, SHOP } from "@/data/products";
+import { SHOP } from "@/data/products";
+import { PARTS, PART_CATEGORIES, usedIn } from "@/data/parts";
 import { T, t } from "@/data/copy";
 import s from "./Parts.module.css";
+
+/* Arabic counts one, two, a few and many differently, so the label is picked
+   rather than templated. */
+const builds = (n, lang) => {
+  const key = n === 1 ? T.parts.inOne : n === 2 ? T.parts.inTwo : n <= 10 ? T.parts.inBuilds : T.parts.inMany;
+  return t(key, lang).replace("{n}", n);
+};
 
 const ask = (lang, what) =>
   `https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(
@@ -14,6 +23,8 @@ const ask = (lang, what) =>
 
 export default function Parts() {
   const { lang } = useStore();
+  const [cat, setCat] = useState(PART_CATEGORIES[0].key);
+  const list = PARTS.filter((p) => p.cat === cat);
 
   return (
     <section className="section" id="parts" style={{ paddingTop: 0 }}>
@@ -25,55 +36,80 @@ export default function Parts() {
           </div>
           <div className={s.aside}>
             <p className="lede">{t(T.parts.lede, lang)}</p>
-            <a className="btn btn-ghost" href={ask(lang, lang === "ar" ? "قطعة" : "a part")} target="_blank" rel="noopener">
+            <a
+              className="btn btn-ghost"
+              href={ask(lang, lang === "ar" ? "قطعة" : "a part")}
+              target="_blank"
+              rel="noopener"
+            >
               {t(T.parts.ask, lang)}
             </a>
           </div>
         </Reveal>
 
-        <Reveal stagger className={s.grid}>
-          {PART_GROUPS.map((g, i) => {
-            const options = partOptions(g, lang);
+        <Reveal className={s.tabs}>
+          {PART_CATEGORIES.map((c) => {
+            const n = PARTS.filter((p) => p.cat === c.key).length;
             return (
-              <article className={s.card} key={g.key}>
-                <div className={s.shot}>
-                  <Shot
-                    src={`/parts/${g.key}.jpg`}
-                    alt={`${t(g, lang)} — ${g.brand}`}
-                    width={900}
-                    height={675}
-                    quality={84}
-                    loading={i < 2 ? undefined : "lazy"}
-                    sizes="(max-width: 620px) 92vw, (max-width: 1100px) 44vw, 290px"
-                  />
+              <button
+                key={c.key}
+                type="button"
+                className={s.tab}
+                data-on={cat === c.key}
+                onClick={() => setCat(c.key)}
+              >
+                {t(c, lang)}
+                <em>{n}</em>
+              </button>
+            );
+          })}
+        </Reveal>
+
+        {/* keyed on the tab so the cards replay their entrance on a switch */}
+        <div className={s.grid} key={cat}>
+          {list.map((p, i) => {
+            const n = usedIn(p);
+            return (
+              <article className={s.card} key={p.name} style={{ "--i": Math.min(i, 9) }}>
+                <div className={s.top}>
+                  <span className={s.thumb}>
+                    <Shot
+                      src={`/parts/${p.shot}.jpg`}
+                      alt={p.name}
+                      width={900}
+                      height={675}
+                      quality={80}
+                      loading={i < 4 ? undefined : "lazy"}
+                      sizes="96px"
+                    />
+                  </span>
+
+                  <div className={s.text}>
+                    <p className={s.brand}>{p.brand}</p>
+                    <h3 className={s.name}><bdi>{p.name}</bdi></h3>
+                    <ul className={s.specs}>
+                      {p.specs.map((x, k) => (
+                        <li key={k}><bdi>{typeof x === "string" ? x : t(x, lang)}</bdi></li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
 
-                <div className={s.body}>
-                  <h3 className={s.name}>{t(g, lang)}</h3>
-                  <p className={s.brand}>{g.brand}</p>
-
-                  <p className={s.label}>{t(T.parts.inBuilds, lang)}</p>
-                  <ul className={s.opts}>
-                    {options.map((o) => (
-                      <li key={o}>{o}</li>
-                    ))}
-                  </ul>
-
-                  <div className={s.foot}>
-                    <span className={s.noPrice}>{t(T.parts.noPrice, lang)}</span>
-                    <a className={s.ask} href={ask(lang, g.brand)} target="_blank" rel="noopener">
-                      {t(T.parts.askOne, lang)}
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" aria-hidden="true">
-                        <path d="M5 12h13m-5-6 6 6-6 6" stroke="currentColor" strokeWidth="2"
-                              strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </a>
-                  </div>
+                <div className={s.foot}>
+                  <span className={s.used}>{builds(n, lang)}</span>
+                  <span className={s.noPrice}>{t(T.parts.noPrice, lang)}</span>
+                  <a className={s.ask} href={ask(lang, p.name)} target="_blank" rel="noopener">
+                    {t(T.parts.askOne, lang)}
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" aria-hidden="true">
+                      <path d="M5 12h13m-5-6 6 6-6 6" stroke="currentColor" strokeWidth="2.2"
+                            strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </a>
                 </div>
               </article>
             );
           })}
-        </Reveal>
+        </div>
 
         <Reveal className={s.also}>
           <span>{t(T.parts.alsoLabel, lang)}</span>

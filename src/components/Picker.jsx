@@ -173,12 +173,12 @@ function Results({ ranked, lang, reset }) {
               </div>
 
               <div className={s.body}>
-                <h3 className={s.name}>{p.name}</h3>
-                <span className={s.cpu}>{p.cpu}</span>
+                <h3 className={s.name}><bdi>{p.name}</bdi></h3>
+                <span className={s.cpu}><bdi>{p.cpu}</bdi></span>
 
                 <ul className={s.specs}>
                   {specsOf(p, lang).slice(0, 4).map((x) => (
-                    <li key={x}>{x}</li>
+                    <li key={x}><bdi>{x}</bdi></li>
                   ))}
                 </ul>
 

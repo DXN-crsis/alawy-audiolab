@@ -4,69 +4,94 @@
   justify-content: space-between;
   gap: var(--s5);
   flex-wrap: wrap;
-  margin-bottom: var(--s6);
+  margin-bottom: var(--s5);
 }
 .aside { display: grid; gap: var(--s4); justify-items: start; max-width: 34em; }
 html[dir="rtl"] .aside { justify-items: end; }
 
+/* One category at a time: forty-two cards in a single grid is a wall. */
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: var(--s5); }
+.tab {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--fg-70);
+  font-size: 13.5px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: background var(--dur-sm) var(--ease), color var(--dur-sm) var(--ease),
+    border-color var(--dur-sm) var(--ease);
+}
+.tab:hover { color: var(--fg); border-color: var(--border-2); }
+.tab[data-on="true"] { background: var(--fg); border-color: var(--fg); color: #000; }
+.tab em { font-style: normal; font-family: var(--mono); font-size: 11px; opacity: 0.55; }
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
   gap: var(--s3);
+}
+
+@keyframes partIn {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to   { opacity: 1; transform: none; }
 }
 
 .card {
   display: flex;
   flex-direction: column;
+  gap: var(--s4);
+  padding: var(--s4);
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: var(--r-2xl);
-  overflow: hidden;
-  transition: border-color var(--dur-sm) var(--ease), transform var(--dur-sm) var(--ease);
+  border-radius: var(--r-xl);
+  animation: partIn 0.4s var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 35ms);
+  transition: border-color var(--dur-sm) var(--ease);
 }
-@media (hover: hover) and (pointer: fine) {
-  .card:hover { border-color: var(--border-2); transform: translateY(-3px); }
-  .card:hover .shot img { transform: scale(1.04); }
-}
+.card:hover { border-color: var(--border-2); }
 
-/* Every photograph was lifted onto the same dark ground before it got here,
-   so the tiles line up as one catalogue instead of nine different studios. */
-.shot {
-  position: relative;
-  aspect-ratio: 4 / 3;
+.top { display: flex; align-items: flex-start; gap: 14px; }
+
+/* Every photograph was lifted onto the same dark ground before it got here, so
+   the thumbnails line up as one catalogue rather than nine different studios. */
+.thumb {
+  flex: none;
+  width: 88px;
+  height: 88px;
+  border-radius: var(--r-md);
+  overflow: hidden;
   background: #12161c;
-  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
 }
-.shot img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.55s var(--ease);
-}
+/* contain, not cover: the tile already carries the ground and the padding, and
+   a graphics card cropped to a square is a sliver of a fan */
+.thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
-.body { padding: var(--s4); display: flex; flex-direction: column; flex: 1; }
-.name { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }
-html[dir="rtl"] .name { letter-spacing: 0; }
+.text { min-width: 0; flex: 1; }
 .brand {
-  margin-top: 4px;
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.03em;
-  color: var(--fg-50);
-}
-
-.label {
-  margin: var(--s4) 0 8px;
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.12em;
   color: var(--fg-30);
+  text-transform: uppercase;
 }
-html[dir="rtl"] .label { letter-spacing: 0; text-transform: none; font-size: 11.5px; }
+.name {
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
 
-.opts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px; }
-.opts li {
+.specs { list-style: none; margin: 9px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px; }
+.specs li {
   font-family: var(--mono);
   font-size: 10.5px;
   line-height: 1.2;
@@ -75,19 +100,25 @@ html[dir="rtl"] .label { letter-spacing: 0; text-transform: none; font-size: 11.
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 4px 7px;
+  white-space: nowrap;
 }
-html[dir="rtl"] .opts li { font-family: var(--ar); font-size: 11px; }
+html[dir="rtl"] .specs li { font-family: var(--mono); }
 
 .foot {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
-  margin-top: auto;
-  padding-top: var(--s4);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--border);
 }
+.used { font-size: 11.5px; color: var(--fg-30); white-space: nowrap; }
 /* Deliberately quiet: it is the absence of a price, not a price. */
-.noPrice { font-size: 12.5px; color: var(--fg-30); }
+.noPrice {
+  margin-inline-start: auto;
+  font-size: 12px;
+  color: var(--fg-50);
+  white-space: nowrap;
+}
 .ask {
   display: inline-flex;
   align-items: center;
@@ -99,7 +130,8 @@ html[dir="rtl"] .opts li { font-family: var(--ar); font-size: 11px; }
   border: 1px solid var(--border-2);
   border-radius: 999px;
   padding: 6px 12px;
-  transition: background var(--dur-sm) var(--ease), color var(--dur-sm) var(--ease);
+  transition: background var(--dur-sm) var(--ease), color var(--dur-sm) var(--ease),
+    border-color var(--dur-sm) var(--ease);
 }
 .ask:hover { background: var(--fg); color: #000; border-color: var(--fg); }
 html[dir="rtl"] .ask svg { transform: scaleX(-1); }
@@ -123,11 +155,10 @@ html[dir="rtl"] .ask svg { transform: scaleX(-1); }
 }
 
 @media (max-width: 620px) {
-  .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .body { padding: var(--s3); }
-  .name { font-size: 14.5px; }
-  .opts li { font-size: 9.5px; padding: 3px 6px; }
-  .label { margin: var(--s3) 0 6px; }
+  .grid { grid-template-columns: 1fr; gap: 10px; }
+  .card { padding: var(--s3); gap: var(--s3); }
+  .thumb { width: 74px; height: 74px; }
+  .name { font-size: 15px; }
+  .used { display: none; }
   .aside :global(.btn) { width: 100%; }
-  .foot { flex-wrap: wrap; gap: 7px; }
 }
