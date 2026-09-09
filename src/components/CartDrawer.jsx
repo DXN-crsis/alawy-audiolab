@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
 import { m, AnimatePresence } from "motion/react";
-import { Mark } from "./Logo";
 import { useStore } from "@/lib/store";
 import { money } from "@/data/products";
 import { T, t } from "@/data/copy";
@@ -13,6 +13,9 @@ const EASE = [0.22, 1, 0.36, 1];
 export default function CartDrawer() {
   const { lang, lines, total, count, bump, open, setOpen, peek, setPeek, toast, checkoutUrl } = useStore();
   const rtl = lang === "ar";
+
+  // the thing just added, else the first line in the cart
+  const shownSlug = toast?.slug ?? lines[0]?.product.slug;
 
   // reserve room at the bottom of the page so the bar never sits on the footer
   useEffect(() => {
@@ -89,6 +92,15 @@ export default function CartDrawer() {
                           onClick={() => setPeek(l.product)}
                           aria-label={`${l.product.name} — ${l.product.cpu}`}
                         >
+                          <span className={s.thumb}>
+                            <Image
+                              src={`/builds/${l.product.slug}.jpg`}
+                              alt=""
+                              width={200}
+                              height={250}
+                              sizes="56px"
+                            />
+                          </span>
                           <span className={s.info}>
                             <b dir="ltr">{l.product.name}</b>
                             <em dir="ltr">{l.product.cpu}</em>
@@ -151,7 +163,9 @@ export default function CartDrawer() {
           >
             <button className={s.barBtn} type="button" onClick={() => setOpen(true)}>
               <span className={s.barThumb}>
-                <Mark size={19} />
+                {shownSlug && (
+                  <Image src={`/builds/${shownSlug}.jpg`} alt="" width={120} height={150} sizes="34px" />
+                )}
               </span>
 
               <span className={s.barText}>

@@ -16,6 +16,62 @@ const builds = (n, lang) => {
   return t(key, lang).replace("{n}", n);
 };
 
+/* One mark per category, so the selector reads as a parts counter rather than
+   a row of word-chips. Drawn here, not in the data file: they are markup. */
+const ICONS = {
+  gpu: (
+    <>
+      <rect x="2.5" y="6" width="19" height="12" rx="2" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="8.5" cy="12" r="2.6" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="15.5" cy="12" r="2.6" stroke="currentColor" strokeWidth="1.6" />
+    </>
+  ),
+  cpu: (
+    <>
+      <rect x="6.5" y="6.5" width="11" height="11" rx="1.6" stroke="currentColor" strokeWidth="1.6" />
+      <rect x="10" y="10" width="4" height="4" rx="0.6" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M9.5 3.2v3.3M14.5 3.2v3.3M9.5 17.5v3.3M14.5 17.5v3.3M3.2 9.5h3.3M3.2 14.5h3.3M17.5 9.5h3.3M17.5 14.5h3.3"
+            stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+  mb: (
+    <>
+      <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.6" />
+      <rect x="6.5" y="6.5" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M15.5 6.5v6M18 6.5v6M6.5 16.5h11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+  ram: (
+    <>
+      <rect x="2.5" y="7" width="19" height="9" rx="1.4" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M6 10.5v2M9.5 10.5v2M13 10.5v2M16.5 10.5v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M8 16v1.6M16 16v1.6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+  ssd: (
+    <>
+      <rect x="2.5" y="8" width="19" height="8" rx="1.6" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="17.6" cy="12" r="1.15" fill="currentColor" />
+      <path d="M5.5 12h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+  psu: (
+    <>
+      <rect x="2.5" y="5.5" width="19" height="13" rx="2" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="9" cy="12" r="3.4" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M16 9.5h3M16 12h3M16 14.5h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </>
+  ),
+  cool: (
+    <>
+      <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="12" cy="12" r="2.1" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M12 3.5c2.6 2 2.6 4.4 0 6.4M20.5 12c-2 2.6-4.4 2.6-6.4 0M12 20.5c-2.6-2-2.6-4.4 0-6.4M3.5 12c2-2.6 4.4-2.6 6.4 0"
+            stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    </>
+  ),
+};
+
 const ask = (lang, what) =>
   `https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(
     lang === "ar" ? `سلام، اريد اسأل عن سعر ${what}` : `Hi — what's the price on ${what}?`
@@ -56,10 +112,16 @@ export default function Parts() {
                 type="button"
                 className={s.tab}
                 data-on={cat === c.key}
+                aria-pressed={cat === c.key}
                 onClick={() => setCat(c.key)}
               >
-                {t(c, lang)}
-                <em>{n}</em>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  {ICONS[c.key]}
+                </svg>
+                <span>
+                  <b>{t(c, lang)}</b>
+                  <em>{n}</em>
+                </span>
               </button>
             );
           })}

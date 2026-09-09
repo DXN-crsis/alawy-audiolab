@@ -238,8 +238,8 @@ export const T = {
     rights: { en: "Eagle Store · Baghdad", ar: "النسر ستور · بغداد" },
     prices: { en: "Prices in Iraqi dinar", ar: "الأسعار بالدينار العراقي" },
     credit: {
-      en: "Part photos via Wikimedia Commons — Jacek Halicki, D-Kuru, Tiia Monto, ElooKoN, Dmitry Makeev (CC BY-SA), 4300streetcar (CC BY), BugWarp (CC0). Illustrative; the exact model in stock changes.",
-      ar: "صور القطع من ويكيميديا كومنز — Jacek Halicki، D-Kuru، Tiia Monto، ElooKoN، Dmitry Makeev (CC BY-SA)، 4300streetcar (CC BY)، BugWarp (CC0). للتوضيح؛ الموديل المتوفر يتغير.",
+      en: "Part photos are manufacturer product shots, sourced through galaxyiraq.com; four come from Wikimedia Commons (Jacek Halicki, Tiia Monto, ElooKoN — CC BY-SA) and the RTX 4060 is the shop's own. Illustrative of the model — the exact partner card or kit in stock varies.",
+      ar: "صور القطع هي صور الشركات المصنّعة، مأخوذة عبر galaxyiraq.com؛ وأربعة منها من ويكيميديا كومنز (Jacek Halicki، Tiia Monto، ElooKoN — CC BY-SA)، وصورة RTX 4060 من منشور المتجر نفسه. للتوضيح — الموديل المتوفر يتغير حسب السوق.",
     },
   },
 };

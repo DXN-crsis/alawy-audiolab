@@ -9,27 +9,57 @@
 .aside { display: grid; gap: var(--s4); justify-items: start; max-width: 34em; }
 html[dir="rtl"] .aside { justify-items: end; }
 
-/* One category at a time: forty-two cards in a single grid is a wall. */
-.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: var(--s5); }
+/* One category at a time: forty-two cards in a single grid is a wall. Seven
+   labelled tiles rather than seven word-chips, because this is the selector
+   the whole section hangs off. On a phone they scroll sideways instead of
+   stacking into four rows. */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: var(--s5);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
 .tab {
-  height: 38px;
-  padding: 0 16px;
-  border-radius: 999px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 16px 10px 12px;
+  border-radius: var(--r-lg);
   cursor: pointer;
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--fg-70);
-  font-size: 13.5px;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
+  text-align: start;
   transition: background var(--dur-sm) var(--ease), color var(--dur-sm) var(--ease),
     border-color var(--dur-sm) var(--ease);
 }
+html[dir="rtl"] .tab { padding: 10px 12px 10px 16px; }
+.tab svg { width: 21px; height: 21px; flex: none; color: var(--fg-30); transition: color var(--dur-sm) var(--ease); }
+.tab b { display: block; font-size: 13.5px; font-weight: 600; letter-spacing: -0.015em; white-space: nowrap; }
+html[dir="rtl"] .tab b { letter-spacing: 0; }
+.tab em {
+  display: block;
+  margin-top: 2px;
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--fg-30);
+}
+
 .tab:hover { color: var(--fg); border-color: var(--border-2); }
-.tab[data-on="true"] { background: var(--fg); border-color: var(--fg); color: #000; }
-.tab em { font-style: normal; font-family: var(--mono); font-size: 11px; opacity: 0.55; }
+.tab:hover svg { color: var(--fg-50); }
+.tab[data-on="true"] {
+  background: var(--surface-2);
+  border-color: var(--pop);
+  color: var(--fg);
+}
+.tab[data-on="true"] svg { color: var(--pop); }
+.tab[data-on="true"] em { color: var(--fg-50); }
 
 .grid {
   display: grid;
