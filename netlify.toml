@@ -1,9 +1,13 @@
-# Netlify detects Next.js and installs its runtime itself, so the plugin is
-# deliberately not declared here — declaring it pins a version that then has to
-# be bumped by hand.
+# The Next.js runtime is declared rather than left to framework detection.
+# Detection works when Netlify builds from a linked git repo; it does not fire
+# on a zip upload, and without the runtime `publish = ".next"` is served as a
+# plain directory — which 404s on every route, index included.
 [build]
   command = "npm run build"
   publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [build.environment]
   NODE_VERSION = "20"
