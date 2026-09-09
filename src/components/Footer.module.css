@@ -38,3 +38,12 @@
   .grid { grid-template-columns: 1fr 1fr; gap: var(--s5); }
   .brand { grid-column: 1 / -1; }
 }
+
+/* The part photographs are Creative Commons; this is their attribution. */
+.credit {
+  margin-top: 13px;
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--fg-30);
+  max-width: 90ch;
+}

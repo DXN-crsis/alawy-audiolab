@@ -1,63 +1,133 @@
-/* One band rather than a row of tiles: the shop's own photograph on one side,
-   everything they carry on the other. Two rows of content instead of six. */
-.band {
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s5);
+  flex-wrap: wrap;
+  margin-bottom: var(--s6);
+}
+.aside { display: grid; gap: var(--s4); justify-items: start; max-width: 34em; }
+html[dir="rtl"] .aside { justify-items: end; }
+
+.grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
-  gap: var(--s7);
-  align-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--s3);
 }
 
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  overflow: hidden;
+  transition: border-color var(--dur-sm) var(--ease), transform var(--dur-sm) var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { border-color: var(--border-2); transform: translateY(-3px); }
+  .card:hover .shot img { transform: scale(1.04); }
+}
+
+/* Every photograph was lifted onto the same dark ground before it got here,
+   so the tiles line up as one catalogue instead of nine different studios. */
 .shot {
   position: relative;
-  aspect-ratio: 3 / 2;
-  border-radius: var(--r-2xl);
-  border: 1px solid var(--border);
+  aspect-ratio: 4 / 3;
+  background: #12161c;
   overflow: hidden;
-  background: var(--card);
 }
-.shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-.side { min-width: 0; }
-
-.chips {
-  list-style: none;
-  margin: var(--s5) 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.55s var(--ease);
 }
-.chips li {
-  font-size: 13.5px;
+
+.body { padding: var(--s4); display: flex; flex-direction: column; flex: 1; }
+.name { font-size: 17px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }
+html[dir="rtl"] .name { letter-spacing: 0; }
+.brand {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--fg-50);
+}
+
+.label {
+  margin: var(--s4) 0 8px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-30);
+}
+html[dir="rtl"] .label { letter-spacing: 0; text-transform: none; font-size: 11.5px; }
+
+.opts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px; }
+.opts li {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.2;
   color: var(--fg-70);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 7px 14px;
+  border-radius: 6px;
+  padding: 4px 7px;
 }
+html[dir="rtl"] .opts li { font-family: var(--ar); font-size: 11px; }
 
-/* The rest of the shelf, quieter than the parts themselves. */
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: var(--s4);
+}
+/* Deliberately quiet: it is the absence of a price, not a price. */
+.noPrice { font-size: 12.5px; color: var(--fg-30); }
+.ask {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--fg-70);
+  border: 1px solid var(--border-2);
+  border-radius: 999px;
+  padding: 6px 12px;
+  transition: background var(--dur-sm) var(--ease), color var(--dur-sm) var(--ease);
+}
+.ask:hover { background: var(--fg); color: #000; border-color: var(--fg); }
+html[dir="rtl"] .ask svg { transform: scaleX(-1); }
+
+/* The rest of the shelf, one line under the grid. */
 .also {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 7px;
-  margin-top: var(--s4);
+  gap: 8px;
+  margin-top: var(--s5);
 }
 .also span { font-size: 12.5px; color: var(--fg-30); margin-inline-end: 3px; }
 .also i {
   font-style: normal;
   font-size: 12.5px;
-  color: var(--fg-50);
-  border-bottom: 1px solid var(--border-2);
-  padding-bottom: 2px;
+  color: var(--fg-70);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 13px;
 }
-.also i:not(:last-child)::after { content: ""; }
 
-.side :global(.btn) { margin-top: var(--s5); }
-
-@media (max-width: 900px) {
-  .band { grid-template-columns: 1fr; gap: var(--s5); }
-  .shot { aspect-ratio: 16 / 10; border-radius: var(--r-xl); }
-  .side :global(.btn) { width: 100%; }
+@media (max-width: 620px) {
+  .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .body { padding: var(--s3); }
+  .name { font-size: 14.5px; }
+  .opts li { font-size: 9.5px; padding: 3px 6px; }
+  .label { margin: var(--s3) 0 6px; }
+  .aside :global(.btn) { width: 100%; }
+  .foot { flex-wrap: wrap; gap: 7px; }
 }

@@ -57,16 +57,20 @@ export const T = {
   },
 
   parts: {
-    eyebrow: { en: "Also on the shelf", ar: "موجود بالمعرض" },
+    eyebrow: { en: "The parts counter", ar: "قسم القطع" },
     title: { en: "Parts, not just whole machines.", ar: "قطع، مو بس أجهزة كاملة." },
     lede: {
-      en: "Come with a build in mind and leave with the parts, or bring the machine you have and upgrade one piece. New and used. Part prices move with the market, so ask and you get today's number.",
-      ar: "تعال بفكرة تجميعة وخذ قطعها، أو جيب جهازك وطوّر قطعة وحدة. جديد ومستعمل. أسعار القطع تتغير حسب السوق، اسأل وتاخذ سعر اليوم.",
+      en: "Everything that goes into the builds above is sold on its own too — new and used. Prices move with the market week to week, so they are not printed here; ask and you get today's number.",
+      ar: "كل شي يدخل بالتجميعات الفوق ينباع لحاله هم — جديد ومستعمل. الأسعار تتغير حسب السوق أسبوع بأسبوع، علهيچ ما مكتوبة هنا؛ اسأل وتاخذ سعر اليوم.",
     },
+    noPrice: { en: "Price not available", ar: "السعر غير متوفر" },
     ask: { en: "Ask about a part", ar: "اسأل عن قطعة" },
+    askOne: { en: "Ask", ar: "اسأل" },
+    inBuilds: { en: "In the builds", ar: "الموجود" },
     alsoLabel: { en: "And in the shop", ar: "وبالمتجر" },
     also: [
       { en: "Monitors", ar: "شاشات" },
+      { en: "Keyboards and mice", ar: "كيبوردات وماوسات" },
       { en: "Accessories", ar: "اكسسوارات" },
       { en: "Used PlayStation 5", ar: "بلي 5 مستعمل" },
       { en: "Used Xbox", ar: "اكس بوكس مستعمل" },
@@ -230,6 +234,10 @@ export const T = {
     contact: { en: "Contact", ar: "تواصل" },
     rights: { en: "Eagle Store · Baghdad", ar: "النسر ستور · بغداد" },
     prices: { en: "Prices in Iraqi dinar", ar: "الأسعار بالدينار العراقي" },
+    credit: {
+      en: "Part photos via Wikimedia Commons — Jacek Halicki, D-Kuru, Tiia Monto, ElooKoN, Dmitry Makeev (CC BY-SA), 4300streetcar (CC BY), BugWarp (CC0). Illustrative; the exact model in stock changes.",
+      ar: "صور القطع من ويكيميديا كومنز — Jacek Halicki، D-Kuru، Tiia Monto، ElooKoN، Dmitry Makeev (CC BY-SA)، 4300streetcar (CC BY)، BugWarp (CC0). للتوضيح؛ الموديل المتوفر يتغير.",
+    },
   },
 };
 

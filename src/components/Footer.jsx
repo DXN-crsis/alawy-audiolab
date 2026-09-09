@@ -60,6 +60,7 @@ export default function Footer() {
           <span>© {new Date().getFullYear()} {t(T.footer.rights, lang)}</span>
           <span>{t(T.footer.prices, lang)}</span>
         </div>
+        <p className={s.credit}>{t(T.footer.credit, lang)}</p>
       </div>
     </footer>
   );

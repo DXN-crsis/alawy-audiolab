@@ -209,16 +209,76 @@ export const PRODUCTS = [
   },
 ];
 
-/* What else is in the shop. No prices: part prices move week to week and the
-   shop quotes them on WhatsApp, so a number here would be a guess. */
-export const PARTS = [
-  { en: "Graphics cards", ar: "كروت الشاشة" },
-  { en: "Processors", ar: "المعالجات" },
-  { en: "Motherboards", ar: "المذربوردات" },
-  { en: "RAM", ar: "الرامات" },
-  { en: "Storage", ar: "التخزين" },
-  { en: "Power supplies", ar: "الباورات" },
-  { en: "Cases and cooling", ar: "كيسات وتبريد" },
+/* The parts counter. Every option below is read out of the builds above, so
+   the shelf can never claim a part the shop does not actually fit. No prices:
+   part prices move week to week and are quoted on WhatsApp, so a number here
+   would be a guess. */
+export const PART_GROUPS = [
+  {
+    key: "gpu-nvidia",
+    en: "Graphics cards",
+    ar: "كروت الشاشة",
+    brand: "NVIDIA GeForce RTX",
+    of: (p) => (/^RTX/.test(p.name) ? p.name : null),
+  },
+  {
+    key: "gpu-amd",
+    en: "Graphics cards",
+    ar: "كروت الشاشة",
+    brand: "AMD Radeon RX",
+    of: (p) => (/^RX/.test(p.name) ? p.name : null),
+  },
+  {
+    key: "cpu-amd",
+    en: "Processors",
+    ar: "المعالجات",
+    brand: "AMD Ryzen",
+    of: (p) => (/^Ryzen/.test(p.cpu) ? p.cpu : null),
+  },
+  {
+    key: "cpu-intel",
+    en: "Processors",
+    ar: "المعالجات",
+    brand: "Intel Core",
+    of: (p) => (/^Intel/.test(p.cpu) ? p.cpu.replace("Intel ", "") : null),
+  },
+  {
+    key: "board",
+    en: "Motherboards",
+    ar: "المذربوردات",
+    brand: "AM4 · AM5 · LGA 1700",
+    of: (p) => p.mb,
+  },
+  {
+    key: "ram",
+    en: "Memory",
+    ar: "الرامات",
+    brand: "DDR4 · DDR5",
+    of: (p) => p.ram,
+  },
+  {
+    key: "ssd",
+    en: "Storage",
+    ar: "التخزين",
+    brand: "M.2 NVMe · SSD",
+    of: (p) => p.ssd,
+  },
+  {
+    key: "psu",
+    en: "Power and cooling",
+    ar: "الباور والتبريد",
+    brand: "80+ · AIO · Cases",
+    // split the cooling line so "360mm liquid, 7-fan case" lists as two parts;
+    // p.note is deliberately left out, it holds build notes, not components
+    of: (p, lang) => [p.psu, ...(p.cool ? (p.cool[lang] || p.cool.en).split(/,\s*/) : [])],
+  },
+];
+
+// dearest build first, so the strongest part in each group leads the list
+const BY_PRICE = [...PRODUCTS].sort((a, b) => b.price - a.price);
+
+export const partOptions = (g, lang) => [
+  ...new Set(BY_PRICE.flatMap((p) => [].concat(g.of(p, lang) ?? [])).filter(Boolean)),
 ];
 
 export const SHOP = {

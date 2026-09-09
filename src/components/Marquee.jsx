@@ -1,18 +1,25 @@
 "use client";
 
-import { siNvidia, siAmd, siIntel, siMsi, siAsus } from "simple-icons";
+import {
+  siNvidia, siAmd, siIntel, siMsi, siAsus, siCorsair,
+  siKingstontechnology, siSamsung, siSeagate, siHyperx, siLg, siCoolermaster,
+} from "simple-icons";
 import { useStore } from "@/lib/store";
 import { T, t } from "@/data/copy";
 import s from "./Marquee.module.css";
 
-/* The official marks, drawn in the hero's own ink rather than in five brand
-   colours — this is a chain of names, not a sponsor wall. Named imports, not
-   a lookup off the namespace: `import * as` defeats tree shaking and drags all
-   three thousand icons into the bundle. */
-const MARKS = [siNvidia, siAmd, siIntel, siMsi, siAsus];
-// doubled once so a single group is wider than any monitor, then the group
-// itself is rendered twice — that pair is what makes -100% loop with no seam
-const GROUP = [...MARKS, ...MARKS, ...MARKS];
+/* The official marks, drawn in the hero's own ink rather than in twelve brand
+   colours — this is a chain of names, not a sponsor wall. Cards, chips and
+   boards first, then memory, storage and screens. Named imports, not a lookup
+   off the namespace: `import * as` defeats tree shaking and drags all three
+   thousand icons into the bundle. */
+const MARKS = [
+  siNvidia, siAmd, siIntel, siMsi, siAsus, siCorsair,
+  siKingstontechnology, siSamsung, siSeagate, siHyperx, siLg, siCoolermaster,
+];
+// The group is rendered twice and each copy is wider than any monitor, which
+// is what makes -100% land on an identical frame with no seam.
+const GROUP = [...MARKS, ...MARKS];
 
 export default function Marquee() {
   const { lang } = useStore();
